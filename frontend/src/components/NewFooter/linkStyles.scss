@@ -1,0 +1,124 @@
+.linkOverdone {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  gap: 0.5rem;
+  align-items: center;
+
+  @include ph {
+    margin-top: 12px;
+  }
+
+  span {
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 20.8px */
+    @include transition();
+
+    @include ph {
+      font-size: 14px;
+    }
+  }
+
+  svg {
+    height: 32px;
+    @include transition();
+
+    @include tb {
+      width: 24px;
+      height: 24px;
+    }
+
+    @include ph {
+      height: 16px;
+      width: max-content;
+    }
+
+    #Group {
+      #Vector {
+        fill: white;
+        @include transition();
+      }
+      #Vector_2 {
+        fill: #151515;
+        @include transition();
+      }
+      #Vector_3 {
+        fill: #a7a7a7;
+        @include transition();
+      }
+      #Group_2 {
+        #Group_3 {
+          #Vector_4,
+          #Vector_5,
+          #Vector_6 {
+            fill: black;
+            @include transition();
+            stroke: none;
+          }
+        }
+        #Group_4 {
+          #Vector_7,
+          #Vector_8 {
+            fill: black;
+            @include transition();
+            stroke: none;
+          }
+        }
+        #Vector_9,
+        #Vector_6,
+        #Vector_10,
+        #Vector_11,
+        #Vector_12,
+        #Vector_13 {
+          @include transition();
+          fill: black;
+          stroke: none;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    span {
+      color: $primary;
+    }
+
+    #Group {
+      #Vector {
+        fill: #f12625;
+      }
+      #Vector_2 {
+        fill: white;
+      }
+      #Vector_3 {
+        fill: #0085ff;
+      }
+      #Group_2 {
+        #Group_3 {
+          #Vector_4,
+          #Vector_5,
+          #Vector_6 {
+            fill: white;
+          }
+        }
+        #Group_4 {
+          #Vector_7,
+          #Vector_8 {
+            fill: white;
+          }
+        }
+        #Vector_9,
+        #Vector_6,
+        #Vector_10,
+        #Vector_11,
+        #Vector_12,
+        #Vector_13 {
+          fill: white;
+        }
+      }
+    }
+  }
+}

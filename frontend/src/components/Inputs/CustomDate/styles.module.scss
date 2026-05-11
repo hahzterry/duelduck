@@ -1,0 +1,79 @@
+.customDate {
+  position: relative;
+  display: flex;
+  height: 40px;
+  padding: 0 16px;
+  align-items: center;
+  gap: pxToRem(12);
+  border-radius: 15px;
+  width: max-content;
+  cursor: pointer;
+  user-select: none;
+  border: 2px solid $background;
+  background: $backgroundDark;
+  @include transition();
+
+  @include ph {
+    height: pxToRem(40);
+    padding: pxToRem(0) pxToRem(16);
+    gap: pxToRem(12);
+    border-radius: 15px;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    pointer-events: none;
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  & > span {
+    @include transition();
+
+    font-family: Poppins !important;
+    font-size: 12px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 130% !important; /* 15.6px */
+
+    @include ph {
+      font-size: 14px !important;
+    }
+  }
+
+  img {
+    width: pxToRem(22);
+    height: pxToRem(22);
+
+    @include ph {
+      width: pxToRem(22);
+      height: pxToRem(22);
+    }
+  }
+
+  input[type='datetime-local'] {
+    position: absolute;
+    border: none;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+
+  input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+}

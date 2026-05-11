@@ -1,0 +1,59 @@
+.linePercent {
+  width: 100%;
+  display: flex;
+  height: 6px;
+  align-items: center;
+  border-radius: var(--border-radius, 5px);
+  background: var(--second-color);
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: '';
+    height: 100%;
+    background: var(--first-color);
+    width: 0;
+  }
+
+  &:after {
+    content: '';
+    height: 100%;
+    width: 2px;
+    background: $background;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  &[data-export='true'] {
+    &:before {
+      width: var(--percent-no);
+    }
+
+    &:after {
+      left: var(--percent-no);
+    }
+  }
+}
+
+.animated {
+  &:before {
+    animation: animateBefore 1s forwards 200ms ease-in-out;
+  }
+
+  &:after {
+    animation: animateAfter 1s forwards 200ms ease-in-out;
+  }
+}
+
+@keyframes animateBefore {
+  to {
+    width: var(--percent-no);
+  }
+}
+
+@keyframes animateAfter {
+  to {
+    left: var(--percent-no);
+  }
+}

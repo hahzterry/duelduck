@@ -1,0 +1,37 @@
+.slotText {
+  display: inline-flex;
+  height: 1em;
+  line-height: 1;
+  overflow: hidden;
+  vertical-align: middle;
+
+  * {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+  }
+}
+
+.charContainer {
+  display: block;
+  height: 1em;
+  overflow: hidden;
+  position: relative;
+}
+
+.charColumn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  will-change: scroll-position;
+}
+
+.char {
+  height: 1em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}

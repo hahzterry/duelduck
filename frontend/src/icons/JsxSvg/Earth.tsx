@@ -1,0 +1,95 @@
+export const Earth = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <g clip-path="url(#clip0_27_2884)">
+      <path
+        d="M12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5C6.20101 1.5 1.5 6.20101 1.5 12C1.5 17.799 6.20101 22.5 12 22.5Z"
+        stroke="currentColor"
+        stroke-opacity="0.5"
+        stroke-width="1.16667"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M11.9993 1.5C11.9993 1.5 7.91602 5 7.91602 12C7.91602 19 11.9993 22.5 11.9993 22.5"
+        stroke="currentColor"
+        stroke-opacity="0.5"
+        stroke-width="1.16667"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M12 1.5C12 1.5 16.0833 5 16.0833 12C16.0833 19 12 22.5 12 22.5"
+        stroke="currentColor"
+        stroke-opacity="0.5"
+        stroke-width="1.16667"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M1.5 12H22.5"
+        stroke="currentColor"
+        stroke-opacity="0.5"
+        stroke-width="1.16667"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M20.75 6.75H3.25"
+        stroke="currentColor"
+        stroke-opacity="0.5"
+        stroke-width="1.16667"
+        stroke-linejoin="round"
+      />
+      <g filter="url(#filter0_d_27_2884)">
+        <path
+          d="M20.752 17.25H3.25195"
+          stroke="currentColor"
+          stroke-opacity="0.5"
+          stroke-width="1.16667"
+          stroke-linejoin="round"
+        />
+      </g>
+    </g>
+    <defs>
+      <filter
+        id="filter0_d_27_2884"
+        x="2.08529"
+        y="16.6667"
+        width="19.8333"
+        height="3.49984"
+        filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB"
+      >
+        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+        <feColorMatrix
+          in="SourceAlpha"
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          result="hardAlpha"
+        />
+        <feOffset dy="1.16667" />
+        <feGaussianBlur stdDeviation="0.583333" />
+        <feColorMatrix
+          type="matrix"
+          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
+        />
+        <feBlend
+          mode="normal"
+          in2="BackgroundImageFix"
+          result="effect1_dropShadow_27_2884"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="effect1_dropShadow_27_2884"
+          result="shape"
+        />
+      </filter>
+      <clipPath id="clip0_27_2884">
+        <rect width="24" height="24" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);

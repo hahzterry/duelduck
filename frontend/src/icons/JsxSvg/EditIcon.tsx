@@ -1,0 +1,25 @@
+export const EditIcon = ({ onClick }: { onClick: () => void }) => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    onClick={onClick}
+  >
+    <rect
+      width="24"
+      height="24"
+      rx="12"
+      transform="matrix(1 0 0 -1 0 24)"
+      fill="white"
+      fillOpacity="0.05"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M9.70711 17.5001L17.7071 9.50007L14.5 6.29297L6.5 14.293V17.5001H9.70711ZM14.5 7.70718L16.2929 9.50007L15 10.793L13.2071 9.00009L14.5 7.70718ZM12.5 9.7072L14.2929 11.5001L9.29289 16.5001H7.5V14.7072L12.5 9.7072Z"
+      fill="#A7A7A7"
+    />
+  </svg>
+);

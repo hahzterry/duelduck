@@ -1,0 +1,182 @@
+.counter {
+  z-index: 1;
+  display: flex;
+  gap: pxToRem(4);
+
+  & > div {
+    width: pxToRem(32);
+    height: pxToRem(38);
+    border-radius: pxToRem(5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $backgroundTransparent;
+  }
+
+  &-added-zero {
+    span {
+      color: $disabled !important;
+    }
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  span,
+  svg {
+    color: $primary;
+    font-family: Bungee;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 140%;
+  }
+
+  &-win {
+    span,
+    svg {
+      color: $success;
+    }
+  }
+
+  &-lose {
+    span,
+    svg {
+      color: $error;
+    }
+  }
+
+  &-colorSecondary {
+    span,
+    svg {
+      color: $textSecondary !important;
+    }
+  }
+
+  &-colorDark {
+    span,
+    svg {
+      color: $backgroundDark !important;
+    }
+  }
+
+  &-colorPrimary {
+    span,
+    svg {
+      color: $primary !important;
+    }
+  }
+
+  &-isLargeSize {
+    & > div {
+      width: pxToRem(64) !important;
+      height: pxToRem(72) !important;
+    }
+
+    gap: pxToRem(8);
+
+    span,
+    svg {
+      font-family: Bungee;
+      font-size: 28.229px !important;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 140%;
+    }
+  }
+
+  &-isMediumSize {
+    gap: pxToRem(4);
+    @include ph {
+      gap: pxToRem(8);
+    }
+
+    & > div {
+      width: pxToRem(48) !important;
+      height: pxToRem(56) !important;
+
+      @include ph {
+        width: 40px !important;
+        height: 40px !important;
+      }
+    }
+
+    span {
+      font-family: Bungee;
+      font-size: 22px !important;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%;
+
+      @include ph {
+        font-size: 16px !important;
+      }
+    }
+  }
+
+  &-isDuelPageCardSize {
+    & > div {
+      width: pxToRem(48) !important;
+      height: pxToRem(56) !important;
+
+      svg {
+        width: pxToRem(24) !important;
+        height: pxToRem(24) !important;
+      }
+    }
+
+    gap: pxToRem(4);
+
+    span,
+    svg {
+      font-family: Bungee;
+      font-size: 22px !important;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 120%;
+    }
+  }
+
+  &-stats {
+    gap: pxToRem(16) !important;
+
+    & > div {
+      background: $background !important;
+      width: pxToRem(56) !important;
+      height: pxToRem(56) !important;
+    }
+
+    span {
+      font-size: 22.4px !important;
+      font-style: normal;
+      font-weight: 400 !important;
+      line-height: 140%; /* 89.6px */
+    }
+  }
+
+  &-isMainPageStatsSize {
+    gap: pxToRem(4);
+
+    & > div {
+      width: pxToRem(48) !important;
+      height: pxToRem(56) !important;
+
+      svg {
+        width: pxToRem(24) !important;
+        height: pxToRem(24) !important;
+      }
+    }
+
+    span {
+      text-align: center;
+
+      /* title2_bungee */
+      font-family: Bungee;
+      font-size: 22px !important;
+      font-style: normal;
+      font-weight: 400 !important;
+      line-height: 120% !important; /* 26.4px */
+    }
+  }
+}

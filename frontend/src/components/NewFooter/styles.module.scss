@@ -1,0 +1,693 @@
+.footerContainer {
+  display: flex;
+  padding: 24px 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  flex: 1 0 0;
+  position: relative;
+  border-radius: 0px 0px 15px 15px;
+  background: $background;
+  z-index: 10;
+
+  @include tb {
+    padding: 16px;
+  }
+
+  @include ph {
+    background: transparent;
+    padding-top: 0;
+  }
+}
+
+.wrapper {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 32px;
+  border-radius: 15px;
+  overflow: hidden;
+  z-index: 10;
+  position: relative;
+
+  @include tb {
+    padding-bottom: 24px;
+  }
+
+  @include ph {
+    padding-bottom: 64px;
+  }
+
+  &[data-create='true'] {
+    z-index: 0;
+  }
+
+  &[data-browse='true'] {
+    @include ph {
+      padding-bottom: 110px;
+    }
+  }
+}
+
+.copyrightsMobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 0 auto;
+
+  & > span {
+    color: $disabled;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 18.2px */
+  }
+
+  & > a {
+    display: flex;
+    height: 16px;
+    align-items: center;
+    gap: 8px;
+
+    color: $textSecondary;
+
+    /* body_small_14 */
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 18.2px */
+
+    & > svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  color: $textSecondary;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%; /* 20.8px */
+
+  @include tb {
+    gap: 16px;
+    justify-content: center;
+  }
+
+  @include stb {
+    font-size: 12px;
+  }
+
+  @include ph {
+    color: $disabled;
+    justify-content: unset;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 0px;
+  }
+
+  span {
+    color: inherit;
+    text-align: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+}
+
+.bio {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin: 0 auto 24px;
+
+  @include tb {
+    margin: 0 auto 0;
+  }
+
+  @include ph {
+    gap: 16px;
+    margin: 0 auto 0;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nameAndPosition {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+
+  @include ph {
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  &__otherPages {
+    align-self: center;
+
+    span {
+      font-size: 24px;
+    }
+  }
+}
+
+.footerLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding-bottom: 8px;
+  padding-inline: 32px;
+
+  @include tb {
+    padding: 0 40px;
+    border-bottom: none;
+    gap: 24px;
+  }
+
+  @include ph {
+    padding: 0;
+    gap: 1rem;
+  }
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  @include stb {
+    width: 120px;
+    height: 120px;
+  }
+
+  @include ph {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.name {
+  color: $textPrimary;
+  text-align: center !important;
+  font-family: Bungee !important;
+  font-size: 32px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 130% !important; /* 41.6px */
+  letter-spacing: 1px !important;
+
+  @include tb {
+    font-size: 24px !important;
+  }
+
+  @include ph {
+    font-size: 16px !important;
+  }
+}
+
+.position {
+  color: $textSecondary;
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 23.4px */
+
+  @include ph {
+    font-size: 16px;
+    line-height: 100%;
+  }
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+
+  @include ph {
+    gap: 1rem;
+    padding: 16px;
+    width: 100%;
+    border-radius: 15px;
+    border: 2px solid $strokeOpacity;
+  }
+}
+
+.footerForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+
+  textarea,
+  input {
+    color: $textPrimary;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    border: none;
+    resize: none;
+    outline: none;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    padding: 0 32px;
+    align-items: flex-start;
+    border-radius: 15px;
+    background: #212121;
+    caret-color: $primary;
+
+    @include tb {
+      padding: 0 16px;
+    }
+
+    @include ph {
+      font-size: 14px;
+      background: $background;
+    }
+
+    &::placeholder {
+      color: $disabled;
+    }
+  }
+
+  input {
+    height: 56px;
+
+    @include tb {
+      height: 48px;
+    }
+
+    @include ph {
+      height: 40px;
+    }
+  }
+
+  textarea {
+    min-height: 41.6px;
+    padding: 32px;
+    height: 160px;
+
+    @include tb {
+      padding: 16px;
+    }
+
+    @include ph {
+      min-height: 125px;
+      height: 125px;
+      padding: 16px;
+    }
+  }
+}
+
+.tabletLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  &__horisontalLine {
+    width: 100%;
+    height: 2px;
+    background: $backgroundSecond;
+  }
+
+  &__links {
+    display: flex;
+    padding: 16px 0;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__ddLinksContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    align-self: stretch;
+
+    @include stb {
+      gap: 24px;
+    }
+  }
+
+  &__ddLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+
+    @include tb {
+      align-items: center;
+    }
+
+    & > span {
+      color: $disabled;
+
+      /* body_big_medium_18 */
+      font-family: Poppins;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 130%; /* 23.4px */
+    }
+  }
+}
+
+.submit {
+  display: flex;
+  height: 56px;
+  padding: 24px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  align-self: stretch;
+  width: 100%;
+
+  @include tb {
+    height: 48px;
+    padding: 12px;
+  }
+
+  @include ph {
+    height: 40px;
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+.footerContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  border-bottom: 2px solid $backgroundSecond;
+  padding-bottom: 24px;
+  min-height: 500px;
+
+  @include tb {
+    grid-template-columns: unset;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-height: 400px;
+  }
+
+  @include ph {
+    min-height: 350px;
+    border-bottom: none;
+  }
+}
+
+.footerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  flex: 1 0 0;
+  align-self: stretch;
+  border-right: none;
+
+  @include ph {
+    border: none;
+    border-radius: 15px;
+    background: $background;
+    padding: 16px;
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  padding: 32px 0;
+  border-bottom: 2px solid $backgroundSecond;
+
+  @include ph {
+    padding: 0 0 16px 0;
+    flex-direction: column;
+    justify-content: unset;
+    align-items: center;
+    gap: 16px;
+  }
+
+  // Last section on non-home pages (desktop only)
+  &[data-last-section='true'][data-is-home='false'] {
+    border-bottom: 0;
+
+    @include ph {
+      border-bottom: 2px solid $backgroundSecond;
+    }
+  }
+}
+
+.sectionTitle {
+  color: $disabled;
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 130%; /* 23.4px */
+  padding-left: 24px;
+  text-transform: uppercase;
+
+  @include ph {
+    padding-left: unset;
+    font-size: 16px;
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
+
+  @include tb {
+    align-items: flex-start;
+  }
+
+  @include stb {
+    gap: 16px;
+  }
+
+  @include ph {
+    align-items: center;
+  }
+}
+
+.linkItem {
+  color: $textPrimary;
+  text-align: right;
+
+  a {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+
+    span {
+      font-family: Poppins;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 18.2px */
+    }
+  }
+
+  span {
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 20.8px */
+    @include transition();
+
+    @include stb {
+      font-size: 14px;
+    }
+  }
+
+  div {
+    position: relative;
+    height: 24.001px;
+    aspect-ratio: 68.4/24;
+
+    @include ph {
+      height: 16px;
+    }
+
+    svg:last-child {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      @include transition();
+    }
+  }
+
+  &:hover {
+    span {
+      color: $primary;
+    }
+
+    div {
+      svg:first-child {
+        opacity: 0;
+      }
+
+      svg:last-child {
+        opacity: 1;
+      }
+    }
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.legalCompanyName {
+  font-family: Poppins;
+  font-size: 16px;
+  line-height: 130%;
+  color: $textSecondary;
+}
+
+// Responsive visibility utilities - prevent CLS by using CSS instead of JS
+.hideOnPhone {
+  @include ph {
+    display: none !important;
+  }
+}
+
+.hideOnTablet {
+  @include tb {
+    display: none !important;
+  }
+}
+
+.showOnlyOnTabletNotPhone {
+  display: none !important;
+
+  @include tb {
+    display: flex !important;
+  }
+
+  @include ph {
+    display: none !important;
+  }
+}
+
+.hideOnTabletNotPhone {
+  @include tb {
+    display: none !important;
+  }
+
+  @include ph {
+    display: flex !important;
+  }
+}
+
+.phoneBioContainer {
+  display: none !important;
+
+  // Show on phone always, and on desktop only on home page
+  &[data-is-home='true'] {
+    display: flex !important;
+    margin-block: auto 0;
+  }
+
+  @include ph {
+    display: flex !important;
+    width: 100%;
+    justify-content: center;
+    margin-block: auto 0;
+  }
+}
+
+.phoneNameContainer {
+  display: none !important;
+
+  @include ph {
+    display: flex !important;
+    width: 100%;
+  }
+}
+
+// Home page conditional visibility - prevents CLS from JS conditionals
+// Use visibility + position to avoid layout shifts
+.footerLeftWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.showOnlyOnHome {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.hideOnHome {
+  visibility: visible;
+  position: relative;
+}
+
+// When wrapper has data-is-home="true", toggle visibility
+.wrapper[data-is-home='true'] {
+  .showOnlyOnHome {
+    visibility: visible;
+    position: relative;
+    pointer-events: auto;
+  }
+
+  .hideOnHome {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+  }
+}
+
+// Hide PLAY NOW button when user is logged in (data-hidden="true")
+.buttonPlayNow[data-hidden='true'] {
+  display: none !important;
+}

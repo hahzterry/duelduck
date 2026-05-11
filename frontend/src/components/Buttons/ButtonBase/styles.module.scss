@@ -1,0 +1,105 @@
+.buttonBase {
+  cursor: pointer;
+  font-family: Bungee;
+  min-width: 128px;
+  width: max-content;
+  padding: pxToRem(12) pxToRem(32);
+  min-height: 40px;
+  height: min-content;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  background: $primary;
+  color: $background;
+  border: 2px solid $primary;
+  @include transition();
+
+  svg {
+    color: currentColor;
+  }
+
+  @include ph {
+    padding: pxToRem(12) pxToRem(32);
+    min-height: 40px;
+    border-radius: 100px;
+    font-size: unset;
+  }
+
+  &--border {
+    background: transparent;
+    color: $primary;
+
+    &:hover {
+      background: $primary;
+      color: $backgroundDark;
+
+      @include ph {
+        background: transparent;
+        color: $primary;
+      }
+    }
+  }
+
+  &:hover {
+    background: transparent;
+    color: $primary;
+
+    @include ph {
+      color: $background;
+      background: $primary;
+    }
+  }
+
+  &--close {
+    border: none;
+    color: $textSecondary;
+    background: $backgroundTransparent;
+
+    &:hover {
+      color: $textPrimary;
+
+      @include ph {
+        border: none;
+        color: $textSecondary;
+        background: $backgroundTransparent;
+      }
+    }
+  }
+
+  &--disabled {
+    pointer-events: none;
+    background: #8A6D31;
+    color: $backgroundDark;
+    border: 2px solid transparent;
+    cursor: not-allowed;
+
+    &:hover {
+      background: #8A6D31;
+      border: 2px solid transparent;
+      color: $backgroundDark;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.mainPageButton {
+  padding: 16px 80px;
+  border-radius: 20px;
+  font-family: Bungee;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 56px */
+
+  @include ph {
+    padding: pxToRem(16) pxToRem(88);
+    border-radius: 15px;
+    font-family: Bungee;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 33.6px */
+  }
+}

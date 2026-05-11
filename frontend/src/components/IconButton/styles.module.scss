@@ -1,0 +1,64 @@
+.iconButton {
+  width: 2rem;
+  height: 2rem;
+  background: $backgroundTransparent;
+  color: $textSecondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+
+  @include transition();
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &:hover {
+    background: $primaryOpacity;
+    color: $primary;
+  }
+
+  @include ph {
+    width: 2rem;
+    height: 2rem;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+
+.secondary {
+  background: $backgroundDark;
+  color: $textSecondary;
+
+  &:hover {
+    background: $primary;
+    color: $background;
+  }
+}
+
+.disabled {
+  background: $backgroundDark;
+  color: $textSecondary;
+  cursor: not-allowed;
+
+  &:hover {
+    background: $backgroundDark;
+    color: $textSecondary;
+  }
+}
+
+.large {
+  min-width: 3rem;
+  min-height: 3rem;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

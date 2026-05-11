@@ -1,0 +1,93 @@
+.iconButton {
+  min-width: 32px;
+  min-height: 32px;
+  background: $primary;
+  color: $textSecondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+
+  @include transition();
+
+  svg,
+  canvas {
+    width: 18px;
+    height: 18px;
+    color: $backgroundDark;
+    @include transition();
+  }
+
+  * {
+    @include transition();
+  }
+
+  @include tb {
+    min-width: 40px;
+    min-height: 40px;
+
+    svg,
+    canvas {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  @include ph {
+    min-width: 24px;
+    min-height: 24px;
+
+    svg,
+    canvas {
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &__elements {
+    display: grid;
+    grid-template-areas: "overlay";
+    place-items: center;
+
+    & > * {
+      @include transition();
+      grid-area: overlay;
+      opacity: 0;
+
+      &[data-hovered='true'] {
+        opacity: 1;
+      }
+    }
+  }
+
+  &:hover {
+    & > * {
+      scale: 1.1;
+    }
+  }
+}
+
+.secondary {
+  background: $backgroundTransparent;
+
+  svg,
+  div,
+  canvas {
+    color: $textSecondary;
+  }
+
+  &:hover {
+    background: $primary;
+
+    svg,
+    div,
+    canvas {
+      color: $background;
+    }
+  }
+}
+
+.bordered {
+  border: 2px solid $backgroundDark;
+}

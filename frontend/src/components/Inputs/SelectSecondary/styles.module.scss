@@ -1,0 +1,134 @@
+.buttonOpen {
+  display: flex;
+  height: 40px;
+  padding: 0 12px;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  border-radius: 15px;
+  background: $background;
+  cursor: pointer;
+  @include transition();
+
+  span,
+  svg {
+    color: $textSecondary !important;
+  }
+
+  &:hover > * {
+    color: $primary;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__container {
+    position: relative;
+
+    span {
+      color: $textPrimary;
+      text-align: center;
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px; /* 125% */
+      white-space: nowrap;
+      @include transition();
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      color: $textPrimary;
+      aspect-ratio: 1/1;
+      @include transition();
+    }
+
+    @include ph {
+      font-size: 14px;
+    }
+  }
+
+  &__dropdown {
+    border-radius: 15px;
+    background: $background;
+    padding: 0 12px 12px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    gap: 12px;
+    top: 0;
+    z-index: 12;
+
+    &--left {
+      left: 0;
+    }
+
+    &--right {
+      right: 0;
+    }
+  }
+
+  &__dropdownTitle {
+    display: flex;
+    height: 40px;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    span,
+    svg {
+      color: $textSecondary !important;
+    }
+
+    & > svg {
+      rotate: 0.5turn;
+    }
+  }
+
+  &__dropdownScroll {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 12px;
+  }
+
+  &__line {
+    @include horizontalLine();
+  }
+
+  &__dropdownElement {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    & > img {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      color: $textSecondary;
+    }
+
+    &:hover > * {
+      color: $primary;
+    }
+
+    &__selected {
+      span,
+      svg {
+        color: $primary !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+.textInBlock {
+  display: flex;
+  height: 24px;
+  padding: 4px 8px;
+  min-width: min-content;
+  justify-content: center;
+  align-items: center;
+  border-radius: 95px;
+  background: var(--background-color, $primaryOpacity);
+  color: var(--color, $primary);
+  text-align: right;
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 14.4px */
+}

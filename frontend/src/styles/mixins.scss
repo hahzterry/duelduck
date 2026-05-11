@@ -1,0 +1,85 @@
+@use 'sass:map';
+
+$breakpoints: (
+  'ph': 600px,
+  'stb': 834px,
+  'tb': 1052px,
+  'md': 1360px,
+);
+
+@function pxToRem($value) {
+  @return #{calc($value / 16)}rem;
+}
+
+@mixin transition(
+  $property: all,
+  $duration: 0.3s,
+  $timing-function: ease-in-out,
+  $delay: 0s
+) {
+  transition: $property $duration $timing-function $delay;
+}
+
+@mixin ph {
+  @media (max-width: map.get($breakpoints, 'ph')) {
+    @content;
+  }
+}
+
+@mixin stb {
+  @media (max-width: map.get($breakpoints, 'stb')) {
+    @content;
+  }
+}
+
+@mixin tb {
+  @media (max-width: map.get($breakpoints, 'tb')) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (max-width: map.get($breakpoints, 'md')) {
+    @content;
+  }
+}
+
+@mixin breakpoint($bp: 0) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}
+
+@keyframes animate-gradient {
+  to {
+    background-position: 200%;
+  }
+}
+
+@mixin textAnimation(
+  $duration: 3s,
+  $timing-function: linear,
+  $iteration-count: infinite
+) {
+  background: linear-gradient(90deg, #212121 0%, #fff 50%, #212121 100%);
+  background-size: 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animate-gradient $duration $timing-function $iteration-count;
+  contain: layout style paint;
+}
+
+@mixin horizontalLine($thickness: 2px, $color: rgba(255, 255, 255, 0.1)) {
+  display: block;
+  width: 100%;
+  height: $thickness;
+  background-color: $color;
+}
+
+@mixin verticalLine($thickness: 2px, $color: rgba(255, 255, 255, 0.1), $height: 100%) {
+  display: block;
+  height: $height;
+  width: $thickness;
+  background-color: $color;
+}

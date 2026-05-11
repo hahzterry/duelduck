@@ -1,0 +1,144 @@
+.notFound {
+  height: calc(100dvh - #{$headerHeight});
+  padding-top: 64px;
+  margin: 0 auto;
+  max-width: 1312px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+
+  @include tb {
+    height: calc(100dvh - 80px);
+    max-width: 100%;
+    padding-top: 0;
+    gap: 82px;
+  }
+
+  @include ph {
+    height: calc(100dvh - 76px);
+    padding-top: 64px;
+    gap: unset;
+  }
+
+  &__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+
+    @include tb {
+      margin-top: auto;
+    }
+
+    @include ph {
+      gap: 24px;
+      margin-top: unset;
+    }
+  }
+
+  &__titleAndButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+
+    @include ph {
+      gap: 24px;
+    }
+  }
+
+  &__titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    & > span:first-child {
+      color: $primary;
+      text-align: center;
+
+      /* H2_32 */
+      font-family: Bungee;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 41.6px */
+      letter-spacing: 1px;
+
+      @include ph {
+        font-size: 16px;
+        max-width: 300px;
+      }
+    }
+
+    & > span:last-child {
+      color: $textPrimary;
+      text-align: center;
+      font-feature-settings:
+        'liga' off,
+        'clig' off;
+
+      /* H3_24 */
+      font-family: Poppins;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 130%; /* 31.2px */
+
+      @include ph {
+        font-size: 12px;
+      }
+    }
+  }
+
+  &__404Text {
+    background: linear-gradient(
+      90deg,
+      #a7a7a7 27.7%,
+      #414141 70.85%,
+      #a7a7a7 100%
+    );
+    background-size: 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animate-gradient 3s linear infinite;
+    contain: layout style paint;
+    text-align: center;
+    font-feature-settings:
+      'liga' off,
+      'clig' off;
+
+    /* H3_24 */
+    font-family: Bungee;
+    font-size: 170px;
+    line-height: 100%;
+    font-style: normal;
+    font-weight: 500;
+
+    @include ph {
+      font-size: 104px;
+    }
+  }
+
+  &__buttonCreate {
+    width: max-content;
+    border-radius: 100px;
+    align-self: center !important;
+  }
+
+  &__bigDuck {
+    margin: 0 auto -228px;
+    width: 417px;
+    height: 540px;
+
+    @include ph {
+      margin: 0 auto -100px;
+      width: 244px;
+      height: 316px;
+    }
+  }
+}

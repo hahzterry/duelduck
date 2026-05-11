@@ -1,0 +1,37 @@
+.switch {
+  display: flex;
+  height: 48px;
+  padding: 0 12px;
+  align-items: center;
+  border-radius: 15px;
+  background: $background;
+  gap: 12px;
+  cursor: pointer;
+  @include transition();
+
+  &:hover {
+    & > span {
+      color: $primary;
+    }
+  }
+
+  @include stb {
+    height: 40px;
+    padding: 0 8px;
+    gap: 8px;
+  }
+
+  & > span {
+    color: $textSecondary;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 20.8px */
+
+    @include stb {
+      font-size: 16px;
+    }
+  }
+}

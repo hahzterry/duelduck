@@ -1,0 +1,85 @@
+.progressButton {
+  display: flex;
+  height: 56px;
+  padding: 24px;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  align-self: stretch;
+  border-radius: 100px;
+  position: relative;
+  border: 2px solid var(--main-button-color, $primary);
+  cursor: pointer;
+  width: 100%;
+  @include transition();
+
+  @include stb {
+    height: 40px;
+    padding: 10px;
+  }
+
+  &__backgroundContainer {
+    position: absolute;
+    inset: -2px;
+    overflow: hidden;
+    border-radius: 100px;
+    z-index: 0;
+  }
+
+  &__background {
+    background: var(--main-button-color, $primary);
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    @include transition(background, .3s);
+  }
+
+  &__text {
+    color: $backgroundDark;
+    text-align: center;
+    font-family: Bungee;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    position: relative;
+    z-index: 1;
+    line-height: 100%; /* 25.2px */
+    @include transition();
+
+    @include stb {
+      font-size: 14px;
+    }
+  }
+
+  &:hover[data-disabled="false"], &--progress[data-disabled="false"] {
+    & > span {
+      color: var(--main-button-color, $primary);
+    }
+  }
+
+  &:hover:not(&--progress)[data-disabled="false"] {
+    .progressButton__background {
+      background: transparent;
+    }
+  }
+
+  &[data-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  &__textProgressContainer  {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    user-select: none;
+
+    & > span {
+      color: $backgroundDark;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+.fadeEnter {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+.fadeEnterActive {
+  opacity: 1;
+  transform: translateY(0);
+  @include transition(all, var(--switch-duration, 300ms), ease-out);
+}
+.fadeExit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fadeExitActive {
+  opacity: 0;
+  transform: translateY(-4px);
+  @include transition(all, var(--switch-duration, 300ms), ease-in);
+}

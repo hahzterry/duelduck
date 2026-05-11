@@ -1,0 +1,114 @@
+.toggle {
+  display: flex;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  border: 2px solid transparent;
+  background: $background;
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+  @include transition();
+
+  @include ph {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    padding: 8px;
+  }
+
+  &:hover {
+    border-color: $primary;
+  }
+
+  &--active {
+    border-color: $primary;
+  }
+
+  &__icon {
+    display: flex;
+
+    svg {
+      width: 24px;
+      height: 24px;
+
+      @include ph {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  @include stb {
+    &:hover {
+      border-color: transparent;
+    }
+  }
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  line-height: 1;
+  opacity: 0;
+  animation: duckScatter 0.85s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: var(--delay, 0ms);
+
+  svg {
+    width: var(--size, 14px);
+    height: var(--size, 14px);
+  }
+}
+
+@keyframes duckScatter {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translate(
+        calc(-50% + var(--tx, 0px) * 0.4),
+        calc(-50% + var(--ty, 0px) * 0.4)
+      )
+      scale(1)
+      rotate(calc(var(--rot, 0deg) * 0.3));
+  }
+
+  65% {
+    opacity: 0.7;
+    transform: translate(
+        calc(-50% + var(--tx, 0px) * 0.8),
+        calc(-50% + var(--ty, 0px) * 0.8)
+      )
+      scale(0.6)
+      rotate(calc(var(--rot, 0deg) * 0.7));
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(
+        calc(-50% + var(--tx, 0px)),
+        calc(-50% + var(--ty, 0px))
+      )
+      scale(0.3)
+      rotate(var(--rot, 0deg));
+  }
+}

@@ -1,0 +1,133 @@
+stages:
+  - build
+  - deploy
+  - notify
+
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "deploy-stage"'
+      variables:
+        ENV: "stage"
+        WEBHOOK: "$SLACK_WEBHOOK_CI_STAGE"
+        INFISICAL_ENV: "stage"
+        SSH_DIR: "duel-duck-front-stage"
+        IMAGE_TAG: "deploy-stage-$CI_COMMIT_SHORT_SHA"
+        DEPLOY_HOST: "$DEPLOY_HOST_STAGE"
+    - if: '$CI_COMMIT_BRANCH == "deploy-prod"'
+      variables:
+        ENV: "prod"
+        WEBHOOK: "$SLACK_WEBHOOK_CI_PROD"
+        INFISICAL_ENV: "prod"
+        SSH_DIR: "duel-duck-front-prod"
+        IMAGE_TAG: "deploy-prod-$CI_COMMIT_SHORT_SHA"
+        DEPLOY_HOST: "$DEPLOY_HOST_PROD"
+
+# ====================== TEMPLATES ======================
+
+.infisical_commands: &infisical_commands
+  - apk add --no-cache bash sudo wget curl ca-certificates gnupg
+  - |
+    echo "Installing Infisical CLI..."
+    wget -qO- https://artifacts-cli.infisical.com/setup.apk.sh | sh
+    apk add infisical --no-cache
+    echo "Infisical CLI installed: $(infisical --version)"
+  - |
+    echo "Loading secrets from Infisical"
+    export INFISICAL_TOKEN="$INFISICAL_SERVICE_TOKEN"
+    export INFISICAL_API_URL="$INFISICAL_API_URL"
+    infisical export --env=$INFISICAL_ENV --path=/$CI_PROJECT_NAME --format=dotenv > .env
+    echo "Secrets loaded successfully ($(wc -l < .env) variables)"
+    echo ".env file created: $(ls -lh .env | awk '{print $5}')"
+
+.build: &build
+  stage: build
+  image: docker:25.0.3
+  resource_group: "$CI_COMMIT_REF_SLUG"
+  tags:
+    - do_8cpu_16gb
+  script:
+    - docker info
+    - docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_COMMIT_BRANCH'
+
+.deploy: &deploy
+  stage: deploy
+  image: alpine:latest
+  resource_group: "$CI_COMMIT_REF_SLUG"
+  tags:
+    - do_8cpu_16gb
+  before_script:
+    - *infisical_commands
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - cat $SSH_PRIVATE_KEY > /tmp/ssh_key
+    - chmod 600 /tmp/ssh_key
+    - ssh-add /tmp/ssh_key
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh && ssh-keyscan -H $DEPLOY_HOST >> ~/.ssh/known_hosts
+  script:
+    - echo "Adding IMAGE to .env..."
+    - echo "IMAGE=$CI_REGISTRY_IMAGE:$IMAGE_TAG" >> .env
+    - echo "Uploading .env to server..."
+    - scp -o StrictHostKeyChecking=no .env root@$DEPLOY_HOST:$SSH_DIR/.env
+    - echo ".env uploaded successfully"
+    - echo "Deploying Docker container..."
+    - |
+      ssh -o StrictHostKeyChecking=no root@$DEPLOY_HOST << ENDSSH
+        set -e
+        cd $SSH_DIR
+        echo "Updating repository..."
+        git pull origin "deploy-$ENV"
+        echo "Repository updated"
+        echo "Logging into GitLab Registry..."
+        docker login -u "gitlab-ci-token" -p "$CI_JOB_TOKEN" $CI_REGISTRY
+        echo "Pulling image: $CI_REGISTRY_IMAGE:$IMAGE_TAG"
+        docker pull $CI_REGISTRY_IMAGE:$IMAGE_TAG
+        echo "Restarting containers..."
+        docker-compose up -d
+        echo "Deployment completed successfully!"
+      ENDSSH
+  after_script:
+    - rm -f .env
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_COMMIT_BRANCH'
+
+# ====================== WORKING JOBS ======================
+
+Build:
+  <<: *build
+  before_script:
+    - *infisical_commands
+
+Deploy:
+  <<: *deploy
+
+# ====================== NOTIFICATION ======================
+notify_failure:
+  stage: notify
+  image: alpine:3.20
+  tags:
+    - do_8cpu_16gb
+  before_script:
+    - apk add --no-cache curl envsubst
+  script:
+    - envsubst < payloadfail.tpl.json > payload.json
+    - "curl -X POST -H \"Content-type: application/json\" --data @payload.json \"$WEBHOOK\""
+  when: on_failure
+  allow_failure: true
+
+notify_success:
+  stage: notify
+  image: alpine:3.20
+  tags:
+    - do_8cpu_16gb
+  before_script:
+    - apk add --no-cache curl envsubst
+  script:
+    - export GIT_COMMIT_URL="$CI_PROJECT_URL/-/commit/$CI_COMMIT_SHA"
+    - envsubst < payloadsuccess.tpl.json > payload.json
+    - "curl -X POST -H \"Content-type: application/json\" --data @payload.json \"$WEBHOOK\""
+  when: on_success
+  needs: ["Deploy"]

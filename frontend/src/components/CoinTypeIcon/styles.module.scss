@@ -1,0 +1,61 @@
+.coinIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: $backgroundTransparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  svg,
+  img {
+    width: 75%;
+    height: 75%;
+  }
+
+  &--fullWidth {
+    svg,
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__usdc {
+    color: #3e73c4 !important;
+  }
+}
+
+.small {
+  width: 16px;
+  height: 16px;
+}
+
+.wrapper {
+  width: 24px;
+  height: 24px;
+  border-radius: 195.455px;
+  background: $backgroundTransparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  & > div:nth-of-type(1) {
+    position: absolute;
+    left: 10%;
+    top: 35%;
+    transform: translateY(-50%);
+    color: #3e73c4;
+  }
+
+  & > div:nth-of-type(2) {
+    position: absolute;
+    right: 10%;
+    top: 65%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+}

@@ -1,0 +1,280 @@
+.customRangePicker {
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+
+  .react-datepicker-popper {
+    z-index: 101 !important;
+  }
+
+  .react-datepicker {
+    display: flex;
+    width: pxToRem(400);
+    padding: pxToRem(24);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: pxToRem(16);
+    border-radius: 15px;
+    border: 2px solid $backgroundTransparent;
+    background: $background;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.16);
+  }
+
+  .react-datepicker__month-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: pxToRem(12);
+  }
+
+  .react-datepicker__week {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: pxToRem(16);
+    padding-bottom: pxToRem(8);
+    border-bottom: 1px solid $backgroundTransparent;
+  }
+
+  .react-datepicker__month {
+    display: flex;
+    gap: pxToRem(8);
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .react-datepicker__day--highlighted {
+    background-color: $background !important;
+    color: $primary !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .react-datepicker__day {
+    margin: 0;
+    height: pxToRem(40);
+    padding: pxToRem(4) pxToRem(6);
+    border-radius: 5px;
+    width: pxToRem(36.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $textPrimary;
+    border: 3px solid $background;
+    @include transition();
+
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+
+    &:not(.react-datepicker__day--disabled):hover {
+      border: 3px solid $primary !important;
+      background-color: $background;
+    }
+  }
+
+  .react-datepicker__day--outside-month {
+    color: $disabled;
+  }
+
+  .react-datepicker__day--selected {
+    background-color: $primary !important;
+    color: $backgroundDark !important;
+    border: 3px solid $primary;
+
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+  }
+
+  .react-datepicker__day--keyboard-selected {
+    background-color: $background;
+
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+  }
+
+  .react-datepicker__header {
+    border: none;
+    background-color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: pxToRem(12);
+    padding: 0;
+  }
+
+  .react-datepicker__day-names {
+    display: flex;
+    flex-direction: row;
+    gap: pxToRem(16);
+    background-color: inherit;
+    margin: 0;
+  }
+
+  .react-datepicker__day-name {
+    margin: 0;
+    display: flex;
+    height: pxToRem(40);
+    padding: pxToRem(4) pxToRem(6);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    color: $textSecondary;
+    width: pxToRem(36.57);
+
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+  }
+
+  .react-datepicker__day--disabled {
+    cursor: not-allowed;
+    color: $textSecondary;
+  }
+
+  .react-datepicker__day--in-range {
+    background-color: $primary !important;
+    color: $backgroundDark !important;
+    border: 3px solid $primary !important;
+  }
+
+  .react-datepicker__day--in-selecting-range,
+  .react-datepicker__day--selecting-range-start,
+  .react-datepicker__day--selecting-range-end {
+    background-color: $primary !important;
+    color: $backgroundDark !important;
+    border: 3px solid $primary !important;
+  }
+
+  .react-datepicker__current-month {
+    display: inline-flex;
+    align-self: center;
+    color: $textPrimary;
+    font-family: Bungee;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    padding-top: 8px !important;
+
+    @include ph {
+      font-size: 14px;
+    }
+  }
+
+  .react-datepicker__navigation {
+    top: pxToRem(24);
+  }
+
+  .react-datepicker__navigation--next {
+    right: pxToRem(24);
+  }
+
+  .react-datepicker__navigation--previous {
+    left: pxToRem(24);
+  }
+
+  .react-datepicker__navigation-icon {
+    &:before {
+      width: 16px;
+      height: 16px;
+      @include transition();
+    }
+  }
+
+  .react-datepicker__navigation {
+    &:hover {
+      .react-datepicker__navigation-icon::before {
+        border-color: $primary !important;
+      }
+    }
+  }
+
+  .CustomDatePiker__footer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+    padding-top: pxToRem(24);
+    gap: pxToRem(16);
+  }
+
+  .CustomDatePiker__confirmButton {
+    border-radius: 100px;
+    border: 2px solid $primary;
+    flex-shrink: 0;
+    background-color: $primary;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: pxToRem(8) pxToRem(24);
+    @include transition();
+
+    span {
+      @include transition();
+      color: $backgroundDark;
+      text-align: center !important;
+      font-family: Bungee !important;
+      font-size: 16px !important;
+      font-style: normal !important;
+      font-weight: 400 !important;
+      line-height: 140% !important;
+    }
+
+    &:not(.CustomDatePiker__confirmButton--disabled):hover {
+      background-color: $backgroundDark;
+
+      span {
+        color: $primary;
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+
+  .CustomDatePiker__cancelButton {
+    border-radius: 100px;
+    align-items: center;
+    flex-shrink: 0;
+    background-color: $background;
+    border: 2px solid $strokeOpacity;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: pxToRem(8) pxToRem(24);
+    @include transition();
+
+    span {
+      @include transition();
+      color: $textSecondary !important;
+      text-align: center !important;
+      font-family: Bungee !important;
+      font-size: 16px !important;
+      font-style: normal !important;
+      font-weight: 400 !important;
+      line-height: 140% !important;
+    }
+
+    &:hover {
+      span {
+        color: $textPrimary !important;
+      }
+    }
+  }
+}

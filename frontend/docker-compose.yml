@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  duel-duck-front:
+    image: "${IMAGE}"
+    container_name: ${NAME}
+    hostname: ${NAME}
+    restart: always
+    env_file: .env
+    ports:
+      - "127.0.0.1:${LISTEN_PORT_HOST}:${LISTEN_PORT_CONTAINER}"

@@ -1,0 +1,212 @@
+.toast {
+  background-color: var(--error-toast-bg, $error);
+  padding: 16px 24px;
+  align-items: center;
+  min-height: 56px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  @include tb {
+    gap: 32px;
+    padding: 28px 42px;
+  }
+
+  @include ph {
+    padding: 12px 16px;
+    border-radius: 8px;
+    gap: 8px;
+  }
+  &__container {
+    position: fixed;
+    z-index: 2147483648;
+    bottom: 20px;
+    right: 20px;
+    width: min(480px, calc(100dvw - 40px));
+    min-width: min(280px, 100% - 40px);
+
+    @include tb {
+      bottom: 42px;
+    }
+
+    @include stb {
+      bottom: 88px;
+    }
+
+    @include ph {
+      bottom: 76px;
+      left: 20px;
+    }
+  }
+}
+
+.outside {
+  &-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  flex: 1;
+  gap: 12px;
+  min-width: 0;
+}
+
+.title {
+  font-feature-settings:
+    'liga' off,
+    'clig' off;
+  font-family: Bungee;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+  color: var(--error-toast-text, $backgroundDark);
+
+  span,
+  a {
+    font: inherit;
+    color: inherit;
+  }
+
+  a {
+    color: var(
+      --error-toast-accent,
+      var(--error-toast-text, $backgroundDark)
+    );
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.description {
+  color: var(--error-toast-text, $backgroundDark);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+
+  @include tb {
+    font-size: 24px;
+  }
+
+  @include ph {
+    font-size: 12px;
+  }
+
+  span,
+  a {
+    font: inherit;
+    color: inherit;
+  }
+
+  a {
+    color: var(
+      --error-toast-accent,
+      var(--error-toast-text, $backgroundDark)
+    );
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.progressWrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: transparent;
+  overflow: hidden;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.progressBar {
+  height: 100%;
+  background-color: var(--error-toast-progress, $primary);
+  @include transition(all, 0.1s, linear);
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--error-toast-text, $backgroundDark);
+  border-radius: 50%;
+  overflow: hidden;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  aspect-ratio: 1;
+  position: relative;
+  @include transition();
+  will-change: scale;
+
+  &:hover {
+    scale: 1.1;
+  }
+
+  &--haveProgress {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+
+    & > svg {
+      width: 16px;
+      z-index: 2;
+      height: 16px;
+      position: absolute;
+      inset: 8px;
+    }
+  }
+
+  &__backgroundProgress {
+    position: absolute;
+    inset: 2px;
+    z-index: 1;
+    background: $backgroundSecondary;
+  }
+
+  &__progress {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+  }
+}
+
+.toastEnter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.toastEnterActive {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 300ms,
+    transform 300ms;
+}
+
+.toastExit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toastExitActive {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 300ms,
+    transform 300ms;
+}

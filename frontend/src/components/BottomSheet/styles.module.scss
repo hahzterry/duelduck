@@ -1,0 +1,49 @@
+.bottomSheet {
+  position: fixed;
+  left: 0;
+  display: flex;
+  width: 100%;
+  bottom: 0;
+  transform: translateY(100%);
+  padding: 24px 0;
+  gap: 24px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px 15px 0 0;
+  background: $background;
+  z-index: 10000000000;
+  max-height: 90dvh;
+  overflow: hidden;
+  @include transition();
+
+  @include tb {
+    gap: 32px;
+  }
+
+  @include ph {
+    gap: 24px;
+  }
+
+  &--active {
+    transform: translateY(0);
+  }
+
+  .dragHandle {
+    width: 40px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dragHandle {
+      cursor: grab;
+    }
+
+    &--dragging .dragHandle {
+      cursor: grabbing;
+    }
+  }
+}

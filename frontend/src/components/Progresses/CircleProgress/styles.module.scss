@@ -1,0 +1,17 @@
+.progressCircle {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+
+  circle {
+    fill: none;
+    stroke-linecap: round;
+    @include transition(stroke-width);
+    will-change: stroke-dashoffset, stroke-width, transform;
+  }
+
+  &__container {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,332 @@
+.rangeWithProgress2 {
+  position: relative;
+  display: flex;
+  gap: pxToRem(14);
+  flex-direction: column;
+
+  @include ph {
+    gap: pxToRem(12);
+  }
+
+  &__progress {
+    position: absolute;
+    top: pxToRem(calc(-38 - 7));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    svg {
+      color: $primary;
+    }
+
+    &--isThin {
+      top: pxToRem(-44);
+
+      @include ph {
+        top: pxToRem(calc(-32));
+      }
+    }
+  }
+
+  &__progressText {
+    color: $primary !important;
+    text-align: center !important;
+    font-family: Bungee !important;
+    font-size: 22px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 140% !important; /* 30.8px */
+
+    @include ph {
+      font-size: 18px !important;
+    }
+  }
+
+  &__textMaxMin {
+    color: $textSecondary !important;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 23.4px */
+
+    @include ph {
+      font-size: 10px;
+    }
+  }
+
+  &__containerTail {
+    width: pxToRem(16);
+    height: pxToRem(4);
+    display: flex;
+    svg {
+      width: 100%;
+      height: 100%;
+      color: $strokeOpacity;
+      @include transition();
+    }
+    &--isInputFocused {
+      svg {
+        color: $primary;
+      }
+    }
+  }
+
+  &__maxMinContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__range {
+    height: pxToRem(24);
+    border-radius: 30px;
+    position: relative;
+
+    input[type='range'] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      border-radius: 30px;
+      z-index: 5;
+      background: transparent;
+
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: pxToRem(32);
+        height: pxToRem(32);
+        border-radius: 50%;
+        z-index: 6;
+        background: url('../../icons/CirclesInputRange/circle-input-range.svg')
+          no-repeat center;
+        cursor: ew-resize;
+
+        @include ph {
+          background: url('../../icons/CirclesInputRange/mobile.svg') no-repeat
+            center;
+          width: 22px;
+          height: 22px;
+        }
+      }
+    }
+
+    &--isThin {
+      height: pxToRem(12);
+      background-color: $strokeOpacity;
+
+      @include ph {
+        height: pxToRem(8);
+      }
+    }
+  }
+
+  &__inputsRange {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+
+    &--isDouble {
+      input:first-child {
+        position: absolute;
+        pointer-events: none;
+        outline: none;
+        width: 100%;
+
+        &::-webkit-slider-thumb {
+          pointer-events: auto;
+          background: url('../../icons/CirclesInputRange/circle-input-range.svg')
+            no-repeat center;
+        }
+      }
+      input:last-child {
+        position: absolute;
+        pointer-events: none;
+        outline: none;
+        width: 100%;
+        &::-webkit-slider-thumb {
+          pointer-events: auto;
+          background: url('../../icons/CirclesInputRange/circle-input-range.svg')
+            no-repeat center;
+        }
+      }
+    }
+  }
+
+  &__containerVerticalLine {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    position: absolute;
+    overflow: hidden;
+    pointer-events: none;
+    top: 0;
+    z-index: 0;
+  }
+
+  &__commission {
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 31.2px */
+
+    @include ph {
+      font-size: 12px;
+    }
+  }
+
+  &__yellowProgress {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-color: $primary;
+    border-radius: 30px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &__verticalLine {
+    height: 500%;
+    position: absolute;
+    top: -100%;
+    transform: rotate(35deg);
+    width: pxToRem(3);
+    pointer-events: none;
+    background-color: $backgroundTransparent;
+    z-index: 2;
+
+    &--isDouble {
+      background-color: transparent;
+    }
+  }
+
+  &__buttonUnlockPremium {
+    border: none;
+    display: flex;
+    gap: pxToRem(8);
+    background-color: transparent;
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    align-items: center;
+    pointer-events: none;
+    top: 0;
+
+    opacity: 0;
+    transform: translateX(-100%);
+    @include transition();
+
+    &--visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    &--noVisible {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+
+    span {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+    img {
+      width: pxToRem(24);
+      height: pxToRem(24);
+    }
+  }
+
+  &__containerCurrency {
+    position: absolute;
+    left: pxToRem(5);
+    top: pxToRem(-1);
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    svg {
+      width: pxToRem(16);
+      height: pxToRem(16);
+    }
+  }
+
+  &__inputProgress {
+    position: relative;
+    padding: pxToRem(8) pxToRem(0) pxToRem(8) pxToRem(24);
+    height: pxToRem(36);
+    width: pxToRem(72);
+    border: pxToRem(2) solid $strokeOpacity;
+    border-radius: 100px;
+    background-color: $background;
+    caret-color: $primary;
+    color: $textSecondary;
+    display: flex;
+    align-items: center;
+
+    /* body_small */
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+
+    @include transition();
+
+    input {
+      background-color: transparent;
+      height: 100%;
+      border: none;
+      width: 100%;
+      color: inherit;
+
+      font-family: inherit;
+      font-size: inherit;
+      font-style: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+
+      @include transition();
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        z-index: 50;
+      }
+    }
+
+    input:first-child {
+      text-align: right;
+    }
+
+    &--isInputFocused {
+      border-color: $primary;
+    }
+
+    &--isDouble {
+      width: max-content;
+      padding-right: pxToRem(8);
+      input {
+        width: unset;
+      }
+    }
+
+    &--isResizeNoDouble {
+      width: max-content;
+      padding-right: pxToRem(24);
+      justify-content: center;
+      cursor: text;
+      input {
+        width: unset;
+      }
+    }
+  }
+
+  &__containerDoubleInput {
+    display: flex;
+    flex-direction: row;
+  }
+}

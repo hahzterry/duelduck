@@ -1,0 +1,27 @@
+const colors = {
+  primary: '#ffc54d',
+  primaryOpacity: 'rgba(255, 197, 77, 0.1)',
+  backgroundDark: '#000',
+  backgroundSecondary: '#0D0D0D',
+  background: '#151515',
+  bgMain: '#030303',
+  backgroundTransparent: 'rgba(255, 255, 255, 0.05)',
+  backgroundTransparentSecondary: 'rgba(255, 255, 255, 0.10)',
+  backgroundSecondaryTransaparent: 'rgba(21, 21, 21, 0.50)',
+  dropdownBg: '#212121',
+  textPrimary: '#ffffff',
+  textSecondary: '#a7a7a7',
+  backgroundSecond: '#212121',
+  success: '#b0d356',
+  successOpacity: 'rgba(176, 211, 86, 0.1)',
+  error: '#F6762E',
+  errorOpacity: 'rgba(246, 118, 46, 0.1)',
+  strokeOpacity: 'rgba(255, 255, 255, 0.1)',
+  disabled: 'rgba(167, 167, 167, 0.5)',
+  disabledOpacity: '#5d5e5d',
+  backgroundDarkSecondary: 'rgba(7, 7, 7, 1)',
+  blue: '#4A99E9',
+  blueOpacity: 'rgba(29, 155, 240, 0.10)',
+};
+
+export default colors;

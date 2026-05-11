@@ -1,0 +1,5 @@
+.animatedChangeTextComponent {
+  white-space: nowrap;
+  overflow: hidden;
+  @include transition();
+}

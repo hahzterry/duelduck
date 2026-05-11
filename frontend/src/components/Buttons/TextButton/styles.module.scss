@@ -1,0 +1,50 @@
+.textButton {
+  display: flex;
+  align-items: center;
+  gap: pxToRem(4);
+  background: transparent;
+  color: $textSecondary;
+  cursor: pointer;
+  user-select: none;
+  will-change: transform;
+
+  @include transition();
+
+  span,
+  svg {
+    text-align: center;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 20.8px */
+    @include transition();
+    color: $textSecondary;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+
+    span,
+    svg {
+      color: $textPrimary;
+    }
+  }
+}
+
+.activePrimary {
+  span,
+  svg {
+    color: $primary !important;
+  }
+}
+
+.activeColorPrimary {
+  &:hover {
+    span,
+    svg {
+      color: $primary !important;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+.buttonWithIcons {
+  cursor: pointer;
+  display: flex;
+  padding: pxToRem(12) pxToRem(24);
+  justify-content: space-between;
+  align-self: stretch;
+  border-radius: 100px;
+  background: $background;
+  color: $textSecondary;
+  border: none;
+
+  @include transition();
+
+  span {
+    @include transition();
+    color: var(--color);
+  }
+
+  svg {
+    width: pxToRem(24);
+    height: pxToRem(24);
+    margin: auto 0;
+  }
+
+  &:hover {
+    color: var(--hover-color);
+    background: $backgroundTransparent;
+
+    span {
+      color: var(--hover-color);
+    }
+  }
+
+  &__iconAndChildren {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: pxToRem(12);
+
+    svg {
+      width: pxToRem(24);
+      height: pxToRem(24);
+      margin: auto 0;
+    }
+  }
+}

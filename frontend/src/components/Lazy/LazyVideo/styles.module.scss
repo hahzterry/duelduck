@@ -1,0 +1,57 @@
+.lazyVideoContainer {
+  position: relative;
+  overflow: hidden;
+  background-color: #212121;
+  // Ensure border-radius is inherited from external styles
+  border-radius: inherit;
+
+  // Smooth transition when video loads
+  &[data-loaded='true'] {
+    .blurPlaceholder {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .video {
+      opacity: 1;
+    }
+  }
+
+  &[data-loaded='false'] {
+    .video {
+      // Keep video visible but behind placeholder
+      // so poster attribute works natively
+      opacity: 1;
+    }
+  }
+
+  &[data-error='true'] {
+    .video {
+      // Show poster on error
+      opacity: 1;
+    }
+  }
+}
+
+.blurPlaceholder {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+  filter: blur(20px);
+  transform: scale(1.1); // Prevents blur edge artifacts
+}
+
+.video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-out;
+
+  // Ensure poster displays correctly
+  &::-webkit-media-controls {
+    display: none !important;
+  }
+}

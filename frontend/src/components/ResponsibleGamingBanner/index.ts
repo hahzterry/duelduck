@@ -1,0 +1,1 @@
+export { ResponsibleGamingBanner } from './ResponsibleGamingBanner';

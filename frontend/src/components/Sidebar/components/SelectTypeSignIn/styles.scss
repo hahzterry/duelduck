@@ -1,0 +1,79 @@
+.contentSelectTypeSignIn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  justify-content: flex-start;
+  gap: pxToRem(64);
+
+  &__divider {
+    height: 2px;
+    width: 100%;
+    background: $strokeOpacity;
+  }
+
+  &__buttonsAndTexts {
+    display: flex;
+    flex-direction: column;
+    gap: pxToRem(24);
+    width: 100%;
+  }
+
+  &__title {
+    font-family: Bungee;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 22.4px */
+  }
+
+  &__buttonLogin {
+    height: 56px;
+    padding: 12px 24px;
+
+    span {
+      font-size: 16px !important;
+      font-weight: 400 !important;
+      line-height: 140% !important; /* 22.4px */
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+
+      @include tb {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  &__texts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: pxToRem(16);
+    align-self: stretch;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: pxToRem(24);
+    align-self: stretch;
+  }
+
+  &__horizontalLine {
+    border: pxToRem(1) solid $strokeOpacity;
+    width: calc(100% + 128px);
+  }
+
+  &__oldSchoolLogIn {
+    width: 100%;
+    display: flex;
+    gap: pxToRem(64);
+    flex-direction: column;
+    align-items: center;
+  }
+}

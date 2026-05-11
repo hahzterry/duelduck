@@ -1,0 +1,20 @@
+.copyrights {
+  display: flex;
+  justify-content: space-between;
+  font-family: Poppins;
+  font-size: 16px;
+  line-height: 130%;
+  color: $textSecondary;
+  width: 100%;
+
+  & > a {
+    @include transition;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.count {
+  display: flex;
+  height: 24px;
+  padding: 3px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 100px;
+  background: $strokeOpacity;
+  @include transition();
+
+  & > span {
+    color: $textSecondary;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 18.2px */
+    @include transition();
+  }
+}

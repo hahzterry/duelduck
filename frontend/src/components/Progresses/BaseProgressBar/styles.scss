@@ -1,0 +1,35 @@
+.baseProgressBar {
+  display: flex;
+  height: pxToRem(16);
+  border-radius: 100px;
+  flex-direction: column;
+  background: $backgroundTransparent;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  &__progress {
+    height: 100%;
+    border-radius: 100px;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    background-color: $primaryOpacity;
+
+    @include transition(all, 0.02);
+  }
+
+  &__verticalLine {
+    height: 500%;
+    position: absolute;
+    top: -100%;
+    transform: rotate(35deg);
+    width: pxToRem(3.473);
+    left: -5px;
+    pointer-events: none;
+    background-color: $primaryOpacity5;
+    z-index: 2;
+
+    @include transition(all, 0.02);
+  }
+}

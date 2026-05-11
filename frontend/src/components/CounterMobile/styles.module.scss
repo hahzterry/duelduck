@@ -1,0 +1,40 @@
+.counter {
+  display: flex;
+  align-items: center;
+  gap: pxToRem(8);
+
+  &Wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+  }
+
+  span {
+    color: $textPrimary;
+    text-align: center;
+    font-family: Bungee;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    @include transition();
+  }
+}
+
+.increase {
+  span {
+    color: $success !important;
+  }
+}
+
+.decrease {
+  span {
+    color: $error !important;
+  }
+}
+
+.zero {
+  span {
+    color: $disabled !important;
+  }
+}

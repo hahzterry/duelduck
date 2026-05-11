@@ -1,0 +1,198 @@
+.searchSelect {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 4px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 95px;
+  background: $backgroundSecond;
+  cursor: pointer;
+
+  & > span {
+    color: $textSecondary;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 20.8px */
+  }
+
+  &__text {
+    color: $textSecondary;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 400;
+    line-height: 130%; /* 20.8px */
+
+    @include ph {
+      font-size: 12px !important;
+    }
+  }
+
+  &__iconSearch {
+    width: 18px;
+    height: 18px;
+  }
+
+  &__dropdown {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 12px;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px;
+    border: 1px solid $strokeOpacity;
+    z-index: 4;
+    background: $backgroundSecond;
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  &__inputSearch {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 0;
+
+    & > svg {
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      color: $textSecondary;
+      cursor: pointer;
+      @include transition();
+
+      &:hover {
+        color: $textPrimary;
+      }
+    }
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
+
+    input {
+      background: none;
+      border: none;
+      caret-color: $primary;
+      color: $textPrimary;
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 20.8px */
+      min-width: 0;
+      max-width: 100%;
+
+      &::placeholder {
+        color: $disabled;
+      }
+    }
+
+    & > svg {
+      width: 18px;
+      height: 18px;
+      min-width: 18px;
+      color: $textSecondary;
+    }
+  }
+
+  &__element {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    & > div {
+      display: flex;
+      padding: 3px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 109px;
+      background: $backgroundTransparent;
+      width: 24px;
+      height: 24px;
+
+      & > img {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        object-fit: cover;
+      }
+    }
+
+    & > span {
+      color: $textSecondary;
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 100%; /* 20.8px */
+      @include transition();
+    }
+  }
+
+  &__elementContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    align-self: start;
+    border-bottom: 1px solid $strokeOpacity;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover > div > span {
+      color: $primary;
+    }
+
+    &--last {
+      border-bottom: none;
+    }
+
+    &--first {
+      padding-top: 0;
+    }
+  }
+
+  &__empty {
+    display: flex;
+    padding: 12px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    & > img {
+      width: 56px;
+      height: 56px;
+      border-radius: 280px;
+      object-fit: cover;
+    }
+
+    & > span {
+      color: $textSecondary;
+      text-align: center;
+      font-family: Poppins;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 18.2px */
+    }
+  }
+}

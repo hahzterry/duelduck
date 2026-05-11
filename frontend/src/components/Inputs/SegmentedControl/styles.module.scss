@@ -1,0 +1,74 @@
+.segmentedControl {
+  background-color: $background;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+
+  &__element {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+
+    @include stb {
+      padding: 6px;
+    }
+
+    & > span {
+      color: $textSecondary;
+      text-align: center;
+      font-family: Bungee;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 140%; /* 25.2px */
+      @include transition();
+      z-index: 1;
+
+      @include stb {
+        font-size: 14px;
+      }
+    }
+
+    &:hover > span {
+      color: var(--active-color, $primary);
+    }
+
+    &[data-active='true'] > span {
+      color: $backgroundDark;
+    }
+  }
+
+  &__activeBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: 100px;
+    background-color: var(--active-color, $primary);
+    transition: background-color .5s ease-in-out, transform .5s ease-in-out;
+  }
+
+  &__defaultElements {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+
+  &__activeElements {
+    z-index: 1;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    @include transition(all, .5s, ease-in-out);
+  }
+}

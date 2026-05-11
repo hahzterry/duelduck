@@ -1,0 +1,54 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: pxToRem(48);
+  width: 100%;
+
+  @include ph {
+    font-size: 24px;
+  }
+
+  &__titles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+
+    @include ph {
+      align-items: center;
+      font-size: 16px;
+    }
+
+    & > span:first-child {
+      color: $textPrimary;
+
+      /* title1 */
+      font-family: Poppins;
+      font-size: 25px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%; /* 35px */
+
+      @include ph {
+        font-size: 20px;
+      }
+    }
+
+    & > span:last-child {
+      color: $textSecondary;
+
+      /* 💻 body_default */
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 20.8px */
+
+      @include ph {
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+}

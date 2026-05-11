@@ -1,0 +1,82 @@
+// seoComponents/Modal.module.scss
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 102000000000000001;
+  background: rgba(7, 7, 7, 0.5);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  padding: 16px 0;
+
+  &.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+
+  &--modalTop {
+    align-items: start;
+  }
+}
+
+.modalContent {
+  position: relative;
+  background-color: #000;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: transparent;
+  border: none;
+  color: $textSecondary;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 88.889px;
+  background: $background;
+  backdrop-filter: blur(8.888890266418457px);
+  aspect-ratio: 1/1;
+  @include transition();
+
+  @include stb {
+    display: none;
+  }
+
+  &:hover {
+    color: $primary;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.maxContent {
+  width: min-content;
+  background-color: #212121;
+}

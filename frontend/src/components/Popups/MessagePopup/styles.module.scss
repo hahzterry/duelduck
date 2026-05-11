@@ -1,0 +1,31 @@
+.messagePopup {
+  display: flex;
+  max-width: 264px;
+  padding: 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+  border-radius: 15px;
+  background: $background;
+  position: fixed;
+  overflow-wrap: break-word;
+  z-index: 2147483649;
+  margin-top: 16px;
+  pointer-events: none;
+  border: 2px solid $strokeOpacity;
+  will-change: left, top, opacity, transform;
+
+  span {
+    /* body_small_14 */
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    white-space: pre-line;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    font-weight: 400;
+    line-height: 130%; /* 18.2px */
+  }
+}

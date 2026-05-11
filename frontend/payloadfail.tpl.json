@@ -1,0 +1,48 @@
+{
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "❌ CI Failed (${CI_COMMIT_BRANCH})"
+      }
+    },
+    { "type": "divider" },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Project:*\n${CI_PROJECT_NAME}"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Pipeline:*\n#${CI_PIPELINE_ID}"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Commit:*\n<${CI_PROJECT_URL}/-/commit/${CI_COMMIT_SHORT_SHA}|${CI_COMMIT_SHORT_SHA}>"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Author:*\n${CI_COMMIT_AUTHOR}"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Message:*\n${CI_COMMIT_MESSAGE}"
+        }
+      ]
+    },
+    { "type": "divider" },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": { "type": "plain_text", "text": "Pipeline" },
+          "url": "${CI_PIPELINE_URL}"
+        }
+      ]
+    }
+  ]
+}

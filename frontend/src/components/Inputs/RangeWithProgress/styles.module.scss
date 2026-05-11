@@ -1,0 +1,431 @@
+.rangeWithProgress {
+  position: relative;
+  display: flex;
+  gap: pxToRem(16);
+  flex-direction: column;
+  width: 100%;
+
+  &__progressText {
+    color: $primary !important;
+    text-align: center !important;
+    font-family: Bungee !important;
+    font-size: 22px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 140% !important; /* 30.8px */
+
+    @include tb {
+      font-size: 42px !important;
+    }
+
+    @include ph {
+      font-size: 22px !important;
+    }
+  }
+
+  &__progress {
+    position: absolute;
+    top: pxToRem(calc(-38 - 7));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateX(-50%);
+
+    @include tb {
+      top: pxToRem(calc(-64));
+    }
+
+    @include ph {
+      top: pxToRem(calc(-38 - 7));
+    }
+
+    svg {
+      color: $primary;
+    }
+
+    &--isThin {
+      top: pxToRem(-56);
+
+      @include tb {
+        top: pxToRem(-96);
+      }
+
+      @include ph {
+        top: pxToRem(calc(-56));
+      }
+    }
+
+    &--isOnlyText {
+      top: pxToRem(-46);
+
+      @include tb {
+        top: pxToRem(-96);
+      }
+
+      @include ph {
+        top: pxToRem(calc(-56));
+      }
+    }
+  }
+
+  &__containerTail {
+    width: pxToRem(16);
+    height: pxToRem(4);
+    display: flex;
+
+    @include tb {
+      width: pxToRem(32);
+      height: pxToRem(8);
+    }
+
+    @include ph {
+      width: pxToRem(16);
+      height: pxToRem(4);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      color: $strokeOpacity;
+      @include transition();
+    }
+
+    &--isInputFocused {
+      svg {
+        color: $primary;
+      }
+    }
+  }
+
+  &__maxMinContainer {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      @include tb {
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%; /* 44.8px */
+      }
+
+      @include ph {
+        font-size: 1.125rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 130%; /* 44.8px */
+      }
+    }
+  }
+
+  &__range {
+    height: pxToRem(24);
+    border-radius: 30px;
+    position: relative;
+
+    @include tb {
+      height: pxToRem(32);
+    }
+
+    @include ph {
+      height: pxToRem(24);
+    }
+
+    input[type='range'] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      border-radius: 30px;
+      z-index: 1;
+      background: transparent;
+    }
+
+    input[type='range']::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      position: relative;
+      width: pxToRem(32);
+      height: pxToRem(32);
+      z-index: 3;
+      background: url('../../../icons/CirclesInputRange/circle-input-range.svg')
+        no-repeat center !important;
+      cursor: ew-resize;
+
+      @include tb {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: url('../../../icons/CirclesInputRange/extra-tv-circle-input-range.svg')
+          no-repeat center !important;
+      }
+
+      @include ph {
+        width: pxToRem(32);
+        height: pxToRem(32);
+        background: url('../../../icons/CirclesInputRange/circle-input-range.svg')
+          no-repeat center !important;
+      }
+    }
+
+    &--isThin {
+      height: pxToRem(4);
+      background-color: $strokeOpacity;
+
+      @include tb {
+        height: pxToRem(8);
+      }
+
+      @include ph {
+        height: pxToRem(4);
+      }
+    }
+  }
+
+  &__yellowLineContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    border-radius: 30px;
+  }
+
+  &__inputsRange {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+
+    &--isDouble {
+      input:first-child {
+        position: absolute;
+        pointer-events: none;
+        outline: none;
+        width: 100%;
+
+        &::-webkit-slider-thumb {
+          pointer-events: auto;
+        }
+      }
+
+      input:last-child {
+        position: absolute;
+        pointer-events: none;
+        outline: none;
+        width: 100%;
+        &::-webkit-slider-thumb {
+          pointer-events: auto;
+        }
+      }
+    }
+  }
+
+  &__containerVerticalLine {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    position: absolute;
+    overflow: hidden;
+    pointer-events: none;
+    top: 0;
+    z-index: 0;
+  }
+
+  &__yellowProgress {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-color: $primary;
+    border-radius: 30px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &__verticalLine {
+    height: 500%;
+    position: absolute;
+    top: -100%;
+    transform: rotate(35deg);
+    width: pxToRem(3);
+    pointer-events: none;
+    background-color: $backgroundTransparent;
+    z-index: 2;
+
+    &--isDouble {
+      background-color: transparent;
+    }
+  }
+
+  &__buttonUnlockPremium {
+    border: none;
+    display: flex;
+    gap: pxToRem(8);
+    background-color: transparent;
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    align-items: center;
+    pointer-events: none;
+    top: 0;
+
+    opacity: 0;
+    transform: translateX(-100%);
+    @include transition();
+
+    &--visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    &--noVisible {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+
+    span {
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+    svg {
+      color: $primary;
+      width: pxToRem(24);
+      height: pxToRem(24);
+    }
+  }
+
+  &__containerCurrency {
+    position: absolute;
+    left: pxToRem(5);
+    top: pxToRem(-1);
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    @include tb {
+      left: pxToRem(6);
+      top: pxToRem(1);
+    }
+
+    @include ph {
+      left: pxToRem(5);
+      top: pxToRem(-1);
+    }
+
+    span {
+    }
+
+    img,
+    svg {
+      width: pxToRem(16);
+      height: pxToRem(16);
+
+      @include tb {
+        width: pxToRem(24);
+        height: pxToRem(24);
+      }
+
+      @include ph {
+        width: pxToRem(16);
+        height: pxToRem(16);
+      }
+    }
+  }
+
+  &__inputProgress {
+    position: relative;
+    padding: pxToRem(8) pxToRem(8) pxToRem(8) pxToRem(24);
+    height: pxToRem(36);
+    width: pxToRem(80);
+    border: pxToRem(2) solid $strokeOpacity;
+    border-radius: 100px;
+    background-color: $background;
+    caret-color: $primary;
+    color: $textSecondary;
+    display: flex;
+    align-items: center;
+    /* body_small */
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+    @include transition();
+
+    @include tb {
+      padding: pxToRem(12) pxToRem(12) pxToRem(12) pxToRem(32);
+      height: pxToRem(56);
+      width: pxToRem(120);
+      border-width: 4px;
+      font-size: 24px;
+    }
+
+    @include ph {
+      padding: pxToRem(8) pxToRem(8) pxToRem(8) pxToRem(24);
+      height: pxToRem(36);
+      width: pxToRem(80);
+      border-width: 2px;
+      font-size: 14px;
+    }
+
+    input {
+      background-color: transparent;
+      height: 100%;
+      border: none;
+      width: 100%;
+      color: inherit;
+
+      font-family: inherit;
+      font-size: inherit;
+      font-style: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+
+      @include transition();
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+    }
+
+    input:first-child {
+      text-align: right;
+    }
+
+    &--isInputFocused {
+      border-color: $primary;
+    }
+
+    &--isDouble {
+      width: max-content;
+      padding-right: pxToRem(8);
+
+      input {
+        width: unset;
+      }
+    }
+
+    &--isResizeNoDouble {
+      width: max-content;
+      padding-right: pxToRem(24);
+      justify-content: center;
+      cursor: text;
+
+      input {
+        width: unset;
+      }
+    }
+  }
+
+  &__containerDoubleInput {
+    display: flex;
+    flex-direction: row;
+  }
+}

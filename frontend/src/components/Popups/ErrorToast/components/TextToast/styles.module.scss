@@ -1,0 +1,13 @@
+.textToast {
+  color: var(--color);
+  white-space: pre-line;
+  @include transition();
+
+  &:hover {
+    color: var(--hover-color, $textPrimary);
+  }
+
+  &__link {
+    text-decoration: underline;
+  }
+}

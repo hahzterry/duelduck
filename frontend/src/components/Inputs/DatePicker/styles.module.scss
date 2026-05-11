@@ -1,0 +1,492 @@
+.containerButtonOpen {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @include ph {
+    gap: 11.294px;
+  }
+
+  & > span {
+    color: $textPrimary;
+    font-family: Bungee;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%; /* 22.4px */
+
+    @include ph {
+      font-size: 14px;
+    }
+  }
+}
+
+.buttonOpen {
+  display: flex;
+  padding: 4.8px;
+  align-items: center;
+  gap: 9.6px;
+  border-radius: 4.8px;
+  background: $background;
+
+  @include ph {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  & > svg {
+    width: 14.4px;
+    height: 14.4px;
+
+    @include ph {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  & > svg:last-child {
+    color: $textSecondary;
+    @include transition();
+  }
+
+  &--active {
+    & > svg:last-child {
+      transform: rotateX(180deg);
+    }
+  }
+}
+
+.button {
+  height: pxToRem(64);
+  padding: pxToRem(20) pxToRem(24) pxToRem(20) pxToRem(24);
+  border-radius: 30px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  border: 2px solid $strokeOpacity;
+  background-color: $background;
+  position: relative;
+  cursor: pointer;
+  justify-content: space-between;
+
+  & > svg {
+    width: pxToRem(24);
+    height: pxToRem(24);
+    color: $textPrimary;
+
+    @include transition();
+  }
+
+  &--onFocus {
+    & > svg {
+      transform: rotate3d(1, 0, 0, 180deg);
+      color: $primary;
+    }
+  }
+}
+
+.containerCalendarIconAndValue {
+  display: flex;
+  gap: pxToRem(8);
+  align-items: center;
+
+  svg {
+    width: pxToRem(24);
+    height: pxToRem(24);
+    color: $textSecondary;
+  }
+}
+
+.containerDatePicker {
+  position: relative;
+}
+
+.containerDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: $backgroundDark;
+  border: 2px solid $backgroundSecondaryTransaparent;
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: flex;
+  max-height: 560px;
+  width: 580px;
+  flex-direction: column;
+
+  &--hideTime {
+    width: 404px;
+  }
+
+  @include stb {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2147483648;
+    width: calc(100% - 32px);
+    padding: 12px;
+  }
+
+  &__mobileBgBlur {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    background: transparent;
+    backdrop-filter: blur(10px);
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    width: 100%;
+    padding-top: pxToRem(24);
+    gap: pxToRem(16);
+
+    @include stb {
+      padding-top: pxToRem(16);
+      gap: pxToRem(8);
+    }
+  }
+
+  &__cancelButton {
+    border-radius: 100px;
+    align-items: center;
+    flex-shrink: 0;
+    background-color: $background;
+    border: 2px solid $strokeOpacity;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: pxToRem(8) pxToRem(24);
+    @include transition();
+
+    span {
+      @include transition();
+      color: $textSecondary !important;
+      text-align: center !important;
+
+      /* tv_body_bungee */
+      font-family: Bungee !important;
+      font-size: 22px !important;
+      font-style: normal !important;
+      font-weight: 400 !important;
+      line-height: 140% !important; /* 30.8px */
+
+
+      @include stb {
+        font-size: 16px !important;
+      }
+    }
+
+    &:hover {
+      span {
+        color: $textPrimary;
+      }
+    }
+  }
+
+  &__confirmButton {
+    border-radius: 100px;
+    border: 2px solid $primary;
+    flex-shrink: 0;
+    background-color: $primary;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: pxToRem(8) pxToRem(24);
+    @include transition();
+
+    span {
+      @include transition();
+      color: $backgroundDark;
+      text-align: center !important;
+
+      /* tv_body_bungee */
+      font-family: Bungee !important;
+      font-size: 22px !important;
+      font-style: normal !important;
+      font-weight: 400 !important;
+      line-height: 140% !important; /* 30.8px */
+
+      @include stb {
+        font-size: 16px !important;
+      }
+    }
+
+    &:not(.containerDropdown__confirmButton--disabled):hover {
+      background-color: $backgroundDark;
+
+      span {
+        color: $primary;
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  &__mainContent {
+    display: flex;
+  }
+
+  &__datePicker {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    padding-right: 24px;
+    display: flex;
+
+    @include stb {
+      gap: 6px;
+      padding-right: 16px;
+    }
+
+    &--hideTime {
+      padding: 0;
+
+      @include stb {
+        padding-right: 0;
+      }
+    }
+  }
+
+  &__tableDays {
+    flex-direction: column;
+    gap: 0.5rem;
+    display: flex;
+    width: 100%;
+
+    @include stb {
+      gap: .25rem;
+    }
+  }
+
+  &__week {
+    border-bottom: 1px solid $backgroundSecondaryTransaparent;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+
+    @include stb {
+      gap: .25rem;
+      padding-bottom: .25rem;
+    }
+  }
+
+  &__dayName {
+    color: #a7a7a7;
+    border-radius: 4px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2.28563rem;
+    height: 2.5rem;
+    margin: 0;
+    padding: 0.25rem 0.375rem;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    display: flex;
+
+    @include stb {
+      font-size: 12px;
+    }
+  }
+
+  &__day {
+    color: $textPrimary;
+    border: 3px solid #0000;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    width: 2.2875rem;
+    height: 2.5rem;
+    margin: 0;
+    padding: 0.25rem 0.375rem;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    display: flex;
+    cursor: pointer;
+    @include transition();
+
+    &--active {
+      border-color: $primary;
+      background: $primary;
+      color: $backgroundDark;
+    }
+
+    &--anotherMonth {
+      color: #a7a7a780;
+    }
+
+    &:hover {
+      border-color: $primary;
+    }
+
+    &--disabled {
+      cursor: not-allowed !important;
+      border-color: #0000 !important;
+      background: transparent !important;
+      color: #a7a7a780;
+    }
+  }
+
+  &__timePicker {
+    border-left: 2px solid #151515;
+    width: 138.688px;
+  }
+
+  &__titleTime {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2rem;
+
+    & > span {
+      color: #fff;
+
+      font-family: Poppins;
+      font-size: 29px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 130%;
+    }
+  }
+
+  &__timeContainer {
+    padding-left: 24px;
+    width: 100%;
+    height: 288px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 0;
+    list-style: none;
+    overflow-y: scroll;
+  }
+
+  &__time {
+    color: $textSecondary;
+    border: 3px solid $backgroundDark;
+    border-radius: 5px;
+    align-items: center;
+    margin-right: 24px;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    min-width: 80px;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 34px;
+    height: 40px !important;
+    padding: unset !important;
+    cursor: pointer;
+    @include transition();
+
+    &--active {
+      border-color: $primary;
+      background: $primary;
+      color: $backgroundDark;
+    }
+
+    &:hover {
+      border-color: $primary;
+    }
+  }
+
+  &__monthAndYear {
+    flex-direction: row;
+    justify-content: space-between;
+    display: flex;
+  }
+
+  &__headerSelects {
+    display: flex;
+    align-items: center;
+    gap: pxToRem(16);
+  }
+
+  &__headerButtons {
+    display: flex;
+    align-items: center;
+    gap: pxToRem(16);
+    flex-direction: row;
+  }
+
+  &__buttonHeader {
+    border: none;
+    background-color: inherit;
+    width: pxToRem(24);
+    height: pxToRem(24);
+    cursor: pointer;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      color: $textSecondary;
+      @include transition();
+    }
+
+    &--right {
+      transform: rotate(-90deg);
+    }
+
+    &--left {
+      transform: rotate(90deg);
+    }
+
+    &:hover {
+      svg {
+        color: $primary;
+      }
+    }
+
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      svg {
+        color: $textSecondary !important;
+      }
+    }
+  }
+}
+
+.defaultPicker {
+  position: absolute;
+  border: none;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  &::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+}

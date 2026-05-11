@@ -1,0 +1,154 @@
+.containerBaseInput {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+
+  &__errorText {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    color: $error;
+    text-align: left;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 23.4px */
+
+    @include ph {
+      font-size: 10px;
+      bottom: calc(-16px);
+    }
+
+    @include tb {
+      font-size: 12px;
+      bottom: calc(-20px);
+    }
+  }
+
+  input[type='number'] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  &--fullWidth {
+    width: 100%;
+
+    & > div {
+      width: 100%;
+    }
+  }
+
+  &__roundedInput {
+    padding: pxToRem(4) pxToRem(32);
+    background-color: transparent;
+    caret-color: $primary;
+    color: $textPrimary;
+    display: flex;
+    width: 100%;
+    height: pxToRem(56);
+    border: 2px solid $strokeOpacity;
+    border-radius: 30px;
+    align-items: center;
+
+    font-family: 'Poppins';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+
+    &::placeholder {
+      color: $disabled;
+    }
+
+    @include transition(border-color);
+
+    &:focus {
+      border-color: $primary;
+    }
+
+    @include tb {
+      height: 48px;
+      padding: 2px 24px;
+      font-size: 16px;
+    }
+  }
+
+  &__cross {
+    position: absolute;
+    right: 24px;
+    height: pxToRem(32);
+    width: pxToRem(32);
+    top: 50%;
+    transform: translateY(-50%);
+
+    & > svg,
+    & > img {
+      height: 100%;
+      width: 100%;
+      color: $textSecondary;
+      cursor: pointer;
+      @include transition();
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    &[data-last-icon="true"] {
+      pointer-events: none;
+    }
+  }
+
+  &__startIcon {
+    position: absolute;
+    left: 24px;
+    height: pxToRem(32);
+    width: pxToRem(32);
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+}
+
+.buttonText {
+  color: $textSecondary;
+  font-family: Bungee;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 25.2px */
+  cursor: pointer;
+  @include transition();
+
+  &::placeholder {
+    @include transition();
+  }
+
+  @include ph {
+    font-size: 10px;
+  }
+
+  &:hover {
+    color: $primary;
+    border-color: $primary;
+
+    &::placeholder {
+      color: $primary;
+    }
+  }
+}

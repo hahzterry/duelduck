@@ -1,0 +1,17 @@
+export const CheckIcon = () => (
+  <svg
+    width="14"
+    height="10"
+    viewBox="0 0 14 10"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M1 5L5 9L13 1"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

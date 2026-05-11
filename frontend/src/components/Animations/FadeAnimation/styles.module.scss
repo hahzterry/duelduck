@@ -1,0 +1,23 @@
+.wrapper {
+  width: max-content;
+  height: max-content;
+}
+
+.fadeEnter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.fadeEnterActive {
+  opacity: 1;
+  transform: scale(1);
+  @include transition(all, var(--switch-duration, 300ms));
+}
+.fadeExit {
+  opacity: 1;
+  transform: scale(1);
+}
+.fadeExitActive {
+  opacity: 0;
+  transform: scale(0.95);
+  @include transition(all, var(--switch-duration, 300ms));
+}

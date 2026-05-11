@@ -1,0 +1,101 @@
+.containerDigitsInput {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+
+  &__inputs {
+    display: flex;
+    align-items: flex-start;
+    gap: pxToRem(8);
+
+    @include ph {
+      gap: pxToRem(2);
+    }
+  }
+
+  &__input {
+    width: 56px;
+    height: 56px;
+    padding: 8px 16px;
+    background-color: $backgroundDark;
+    display: flex;
+    color: $primary;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    border-radius: pxToRem(15);
+    @include transition(border-color);
+    border: 2px solid $backgroundTransparent;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &::placeholder {
+      color: $disabled;
+      font-family: Poppins;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%;
+    }
+
+    &[type='number'] {
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    &--error,
+    &--error:focus {
+      border-color: $error !important;
+      color: $error !important;
+    }
+
+    &--hasNumber {
+      border-color: $primary;
+    }
+
+    @include ph {
+      width: 56px;
+      height: 56px;
+      padding: 8px 16px;
+      font-size: 18px;
+
+      &::placeholder {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &__input:focus {
+    border-color: $primary;
+  }
+
+  &__errorMsg {
+    position: absolute;
+    bottom: pxToRem(-21.4);
+    width: 100%;
+    right: 0;
+    text-align: right;
+    color: $error;
+    text-align: right;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 14.4px */
+    @include transition();
+
+    @include ph {
+      bottom: pxToRem(-18.4);
+      font-size: 12px;
+    }
+  }
+}

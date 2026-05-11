@@ -1,0 +1,172 @@
+.baseTable {
+  @include transition();
+
+  table {
+    border-spacing: 0;
+
+    thead,
+    tbody {
+      tr {
+        td,
+        th {
+          text-align: center; /* Centers content horizontally */
+          vertical-align: middle; /* Centers content vertically */
+          margin: 0 auto;
+          padding: pxToRem(16) pxToRem(24);
+          border-right: none;
+          border-bottom: 1px solid $strokeOpacity;
+
+          @include tb {
+            padding: 8px pxToRem(16);
+          }
+
+          & > div {
+            display: flex;
+            justify-content: center;
+          }
+
+          span {
+            text-align: center;
+          }
+        }
+
+        @include tb {
+          & > td:first-child,
+          & > th:first-child {
+            padding-left: 0;
+          }
+
+          & > td:last-child,
+          & > th:last-child {
+            padding: pxToRem(16) 0;
+          }
+        }
+      }
+
+      tr:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
+
+.txHash {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(1px);
+
+  & > svg {
+    width: 22px;
+    height: 22px;
+    color: $textSecondary;
+    @include transition();
+  }
+
+  &:hover {
+    & > svg {
+      color: $primary;
+    }
+  }
+}
+
+.titleHeader {
+  color: $textSecondary !important;
+  text-align: center !important;
+  font-family: Poppins !important;
+  font-size: 22px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 140% !important; /* 30.8px */
+}
+
+.headerCell {
+  align-items: center;
+
+  * {
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  &Content {
+    display: flex;
+    align-items: center;
+    gap: pxToRem(8);
+
+    span {
+      color: #a7a7a7;
+    }
+  }
+}
+
+.emptyTableContainer {
+  height: 100%;
+
+  tbody {
+    tr:hover {
+      td {
+        background-color: transparent;
+      }
+    }
+  }
+
+  & > table {
+    height: 100%;
+  }
+}
+
+.ascDescIndicator {
+  display: flex;
+  align-items: center;
+  background: $backgroundTransparent;
+  color: $textSecondary;
+  border-radius: 50%;
+  padding: pxToRem(4);
+  width: min-content;
+  height: min-content;
+  cursor: pointer;
+  @include transition();
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  & > svg {
+    width: pxToRem(16);
+    height: pxToRem(16);
+
+    path {
+      @include transition();
+    }
+  }
+
+  &[data-sorted='desc'] {
+    svg {
+      path:first-child,
+      path:nth-child(2) {
+        color: $primary;
+      }
+    }
+  }
+
+  &[data-sorted='asc'] {
+    svg {
+      path:last-child,
+      path:nth-child(3) {
+        color: $primary;
+      }
+    }
+  }
+}
+
+.tableCellPlaceholder {
+  width: 50px;
+  height: 1.5rem;
+  border-radius: 100px;
+}

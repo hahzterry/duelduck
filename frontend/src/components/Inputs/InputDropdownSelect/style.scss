@@ -1,0 +1,247 @@
+.inputDropdownSelect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+
+  &__enter {
+    opacity: 0;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+    visibility: hidden;
+  }
+
+  &__enterActive {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    @include transition(all, var(--switch-duration, 300ms));
+    visibility: visible;
+  }
+
+  &__exit {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    visibility: visible;
+  }
+
+  &__exitActive {
+    opacity: 0;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+    @include transition(all, var(--switch-duration, 300ms));
+    visibility: hidden;
+  }
+
+  &__input {
+    height: pxToRem(64);
+    padding: pxToRem(20) pxToRem(48) pxToRem(20) pxToRem(24);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    border: 2px solid $strokeOpacity;
+    background-color: $background;
+    caret-color: $primary;
+    color: $textPrimary;
+    @include transition();
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+
+    span {
+      user-select: none;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    &--haveIcon {
+      padding: pxToRem(20) pxToRem(48) pxToRem(20) pxToRem(56);
+    }
+  }
+
+  &__inputDropDownCalendar {
+    padding: 0;
+    border: none;
+    display: flex;
+    gap: pxToRem(8);
+    height: pxToRem(29);
+    background-color: inherit;
+    cursor: pointer;
+    align-items: center;
+    @include transition();
+
+    svg {
+      width: pxToRem(24);
+      height: pxToRem(24);
+      @include transition();
+      pointer-events: none;
+      color: $textPrimary;
+    }
+
+    &--onFocus {
+      span {
+        color: $primary;
+      }
+
+      svg {
+        transform: rotate3d(1, 0, 0, 180deg);
+        color: $primary;
+      }
+    }
+  }
+
+  &__containerSvg {
+    width: pxToRem(24);
+    height: pxToRem(24);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: pxToRem(24);
+    pointer-events: none;
+    @include transition();
+
+    svg {
+      width: 100%;
+      height: 100%;
+      color: $textPrimary;
+    }
+
+    &--onFocus {
+      transform: translateY(-50%) rotate3d(1, 0, 0, 180deg);
+
+      svg {
+        width: 100%;
+        height: 100%;
+        color: $primary;
+      }
+    }
+  }
+
+  &__dropdown {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: relative;
+    height: pxToRem(320);
+    padding: pxToRem(0) pxToRem(16) pxToRem(0) pxToRem(0);
+    gap: pxToRem(16);
+  }
+
+  &__dropdownContent {
+    width: calc(100% - 16px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    align-items: center;
+    gap: pxToRem(16);
+  }
+
+  &__containerDropdown {
+    padding: pxToRem(16) pxToRem(0) pxToRem(16) pxToRem(16);
+    position: absolute;
+    top: 100%;
+    background: $background;
+    border-radius: 15px;
+    width: 100%;
+    z-index: 15;
+
+    &--isDropDownLeft {
+      top: pxToRem(29);
+      left: 0;
+    }
+
+    &--isDropDownRight {
+      top: pxToRem(29);
+      right: pxToRem(0);
+    }
+  }
+
+  &__customOption {
+    display: flex;
+    flex-direction: column;
+    gap: pxToRem(16);
+    width: 100%;
+    align-items: center;
+  }
+
+  &__customOptionContainerValue {
+    display: flex;
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    justify-content: start;
+    gap: pxToRem(8);
+    align-items: center;
+
+    span {
+      white-space: normal !important;
+      width: 100%;
+      text-align: start;
+      overflow-wrap: break-word;
+    }
+
+    &--isCenter {
+      justify-content: center;
+    }
+
+    svg,
+    img {
+      width: pxToRem(24);
+      height: pxToRem(24);
+
+      visibility: visible;
+    }
+
+    input[type='text'] {
+      font-family: Poppins;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%;
+      display: flex;
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      color: $textPrimary;
+      caret-color: $primary;
+
+      &::placeholder {
+        color: $disabled;
+      }
+    }
+  }
+
+  &__horizontalLine {
+    border: none;
+    border-bottom: pxToRem(1) solid $strokeOpacity;
+    width: calc(100%);
+  }
+
+  &__containerSelectedValue {
+    position: absolute;
+    top: pxToRem(18);
+    left: pxToRem(24);
+
+    svg,
+    img {
+      width: pxToRem(24);
+      height: pxToRem(24);
+
+      visibility: visible;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext", "webworker"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "es2020",
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "~*": ["./src/*"]
+    }
+  },
+  "include": ["src/app/sw.ts"]
+}

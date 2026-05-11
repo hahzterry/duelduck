@@ -1,0 +1,30 @@
+.bulletList {
+  margin-left: 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bulletItem {
+  list-style: disc;
+  color: $textSecondary;
+
+  span {
+    font-family: Poppins;
+    font-size: 16px;
+    line-height: 130%;
+  }
+
+  @include tb {
+    span {
+      font-size: 14px;
+    }
+  }
+}
+
+.p2custom {
+  b {
+    color: $textPrimary;
+  }
+}

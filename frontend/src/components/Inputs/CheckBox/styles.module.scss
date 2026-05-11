@@ -1,0 +1,32 @@
+.checkboxContainer {
+  position: relative;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  padding: 3px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid $textSecondary;
+  background: $backgroundDark;
+  @include transition();
+
+  input[type='checkbox'] {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  &:has(input[type='checkbox']:checked) {
+    border-color: $primary;
+    background: $primary;
+  }
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+}

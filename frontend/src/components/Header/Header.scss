@@ -1,0 +1,98 @@
+.mobileHeaderWrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  position: relative;
+}
+
+.header {
+  position: sticky;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  z-index: 102000000000000000;
+  background-color: $backgroundDark;
+  @include transition();
+  padding: 16px 0;
+  display: flex;
+  height: $headerHeight;
+  max-height: $headerHeight;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: center;
+  max-width: 1312px;
+  margin: 0 auto;
+
+  @include md {
+    max-width: 1052px;
+  }
+
+  @include tb {
+    max-width: 786px;
+    max-height: $headerHeight;
+    height: 80px;
+    padding: 16px 0;
+  }
+
+  @include ph {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  &__walletAndCurrency {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: pxToRem(32);
+    height: 100%;
+
+    @include tb {
+      gap: pxToRem(16);
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: pxToRem(16);
+    height: 100%;
+
+    @include tb {
+      gap: pxToRem(8);
+    }
+  }
+}
+
+.logo {
+  svg {
+    width: pxToRem(48);
+    height: pxToRem(48);
+    cursor: pointer;
+
+    @include stb {
+      width: pxToRem(24);
+      height: pxToRem(24);
+    }
+  }
+}
+
+.progressBar {
+  width: calc(100%);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 101;
+  background-color: $background;
+}
+
+.siderOpen {
+  z-index: 1000;
+}

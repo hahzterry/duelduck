@@ -1,0 +1,354 @@
+/* styles.module.scss */
+
+.mainContent {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 26.667px 26.667px 0px 0px;
+  overflow: hidden;
+  background: $background;
+  width: 100%;
+  position: relative;
+
+  &__bgImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 112.784px;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    background:
+      linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%),
+      var(--background, #151515);
+  }
+
+  &__imageAndUserName {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+  }
+
+  &__imageProfile {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+
+    & > svg {
+      rotate: 180deg;
+      color: $error;
+    }
+  }
+
+  &__errorMsg {
+    display: flex;
+    padding: 8px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+    border: 2px solid $error;
+    background: $backgroundDark;
+    min-width: 50px;
+
+    & > span {
+      color: $error;
+
+      /* caption */
+      font-family: Poppins;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      white-space: nowrap;
+      line-height: 130%; /* 15.6px */
+    }
+  }
+
+  &__containerUserName {
+    position: relative;
+  }
+
+  &__userName {
+    display: inline-flex;
+    padding: 8px;
+    align-items: center;
+    border-radius: 100px;
+    position: relative;
+    gap: 8px;
+    background: $backgroundDark;
+    z-index: 2;
+
+    & > span {
+      display: inline-flex;
+      color: $textPrimary;
+      font-family: Poppins;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 130%; /* 15.6px */
+      @include transition();
+
+      & > * {
+        color: $textPrimary;
+        font-family: Poppins;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 130%; /* 15.6px */
+      }
+    }
+
+    &--visibleInput {
+      & > span {
+        color: $disabled;
+      }
+    }
+  }
+
+  &__editButtonContainer {
+    width: 24px;
+    height: 24px;
+    @include transition();
+    will-change: transform;
+    border-radius: 50%;
+
+    & > * {
+      width: 100%;
+      height: 100%;
+      @include transition();
+      will-change: transform;
+    }
+
+    &--canHover {
+      &:hover {
+        & > * {
+          scale: 1.1;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  &__input {
+    border: none;
+    background: none;
+    caret-color: $primary;
+    width: var(--input-length, 1ch);
+    min-width: 50px;
+  }
+
+  &__inputMirror {
+    position: absolute;
+    visibility: hidden;
+    white-space: pre;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__check {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    padding: 4.801px 4.8px 4.799px 4.8px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 60px;
+    backdrop-filter: blur(0.75px);
+
+    & > * {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__dataContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__text {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px; /* 121.429% */
+  }
+
+  &__horisontalLine {
+    width: 100%;
+    height: 1px;
+    background: $strokeOpacity;
+    margin: 16px 0;
+  }
+
+  &__valuePnl {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    & > div {
+      width: 16px;
+      height: 16px;
+      padding: 3px;
+      border-radius: 50%;
+      background: $backgroundTransparent;
+
+      & > div {
+        width: 100%;
+        height: 100%;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  &__dataArrContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+}
+
+.fadeTextEnter {
+  opacity: 0;
+  transform: translate(-50%, -20px);
+}
+
+.fadeTextEnterActive {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
+}
+
+.fadeTextExit {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.fadeTextExitActive {
+  opacity: 0;
+  transform: translate(-50%, -20px);
+  transition:
+    opacity 300ms ease-in,
+    transform 300ms ease-in;
+}
+
+.actions {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 1;
+  font-size: 18px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 140% !important; /* 25.2px */
+
+  * {
+    background: inherit;
+  }
+
+  & > span {
+    font-family: Bungee;
+  }
+
+  div {
+    position: absolute;
+    width: 20px !important;
+    height: 20px !important;
+
+    canvas {
+      width: 20px !important;
+      height: 20px !important;
+    }
+
+    @include tb {
+      width: 32px !important;
+      height: 32px !important;
+
+      canvas {
+        width: 32px !important;
+        height: 32px !important;
+      }
+    }
+
+    @include ph {
+      width: 24px !important;
+      height: 24px !important;
+
+      canvas {
+        width: 24px !important;
+        height: 24px !important;
+      }
+    }
+  }
+
+  @include tb {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 35px !important;
+  }
+
+  @include ph {
+    font-size: 18px !important;
+  }
+
+  &ActiveLeft {
+    & > div {
+      left: -28px;
+    }
+
+    @include ph {
+      & > div {
+        left: -28px;
+      }
+    }
+
+    @include tb {
+      & > div {
+        left: -40px;
+      }
+    }
+  }
+
+  &ActiveRight {
+    & > div {
+      right: -28px;
+    }
+
+    @include ph {
+      & > div {
+        right: -28px;
+      }
+    }
+
+    @include tb {
+      & > div {
+        right: -40px;
+      }
+    }
+  }
+}

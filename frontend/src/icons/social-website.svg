@@ -1,0 +1,23 @@
+<svg width="24" height="24" viewBox="0 0 22.1667 22.1667" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 2087327696">
+<path id="Vector" d="M11.0833 21.5833C16.8823 21.5833 21.5833 16.8823 21.5833 11.0833C21.5833 5.28434 16.8823 0.583333 11.0833 0.583333C5.28434 0.583333 0.583333 5.28434 0.583333 11.0833C0.583333 16.8823 5.28434 21.5833 11.0833 21.5833Z" stroke="currentColor" stroke-width="1.16667" stroke-linejoin="round"/>
+<path id="Vector_2" d="M11.0827 0.583333C11.0827 0.583333 6.99935 4.08333 6.99935 11.0833C6.99935 18.0833 11.0827 21.5833 11.0827 21.5833" stroke="currentColor" stroke-width="1.16667" stroke-linejoin="round"/>
+<path id="Vector_3" d="M11.0833 0.583333C11.0833 0.583333 15.1667 4.08333 15.1667 11.0833C15.1667 18.0833 11.0833 21.5833 11.0833 21.5833" stroke="currentColor" stroke-width="1.16667" stroke-linejoin="round"/>
+<path id="Vector_4" d="M0.583333 11.0833H21.5833" stroke="currentColor" stroke-width="1.16667" stroke-linejoin="round"/>
+<path id="Vector_5" d="M19.8333 5.83333H2.33333" stroke="currentColor" stroke-width="1.16667" stroke-linejoin="round"/>
+<g id="Group" filter="url(#filter0_d_11441_9463)">
+<path id="Vector_6" d="M19.8333 16.3353H2.33333" stroke="currentColor" stroke-width="1.16667" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_11441_9463" x="1.16667" y="15.752" width="19.8333" height="3.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1.16667"/>
+<feGaussianBlur stdDeviation="0.583333"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_11441_9463"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_11441_9463" result="shape"/>
+</filter>
+</defs>
+</svg>

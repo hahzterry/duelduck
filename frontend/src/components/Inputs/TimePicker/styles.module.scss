@@ -1,0 +1,147 @@
+.timePicker {
+  display: flex;
+  height: 48px;
+  padding: 0 16px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-radius: 15px;
+  border: 1px solid $strokeOpacity;
+  background: $backgroundSecond;
+  position: relative;
+
+  & > svg {
+    width: 20px;
+    height: 20px;
+    color: $textSecondary;
+    @include transition();
+
+    &:hover {
+      color: $primary;
+    }
+  }
+
+  &__inputs {
+    display: inline-flex;
+    align-items: center;
+
+    & > input {
+      border: none;
+      background: none;
+      caret-color: transparent;
+      color: $textPrimary;
+      text-align: center;
+      min-width: 24px;
+      border-radius: 2px;
+      field-sizing: content;
+      /* body_regular_16 */
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      outline: none;
+      user-select: none;
+      line-height: 130%; /* 20.8px */
+      @include transition();
+
+      &::placeholder {
+        color: $disabled;
+      }
+      &::selection {
+        background: transparent;
+        color: inherit;
+      }
+      &:focus {
+        background-color: $primaryOpacity;
+      }
+    }
+
+    & > span {
+      color: $textPrimary;
+      text-align: center;
+
+      /* body_regular_16 */
+      font-family: Poppins;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 130%; /* 20.8px */
+    }
+  }
+
+  &__dropdown {
+    display: flex;
+    width: calc(100% + 2px);
+    max-height: 264px;
+    padding: 12px;
+    align-items: flex-start;
+    gap: 10px;
+    height: 100%;
+    position: fixed;
+    border-radius: 0 0 15px 15px;
+    border-right: 1px solid $strokeOpacity;
+    border-bottom: 1px solid $strokeOpacity;
+    border-left: 1px solid $strokeOpacity;
+    background: $backgroundSecond;
+  }
+
+  &__listTimes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-height: 100%;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__buttonCheck {
+    width: 32px;
+    height: 24px;
+    cursor: pointer;
+    border-radius: 2px;
+    font-family: Poppins;
+    font-size: 16px;
+    min-height: 24px;
+    font-style: normal;
+    font-weight: 500;
+    border: none;
+    line-height: 100%; /* 20.8px */
+    background: transparent;
+    color: $textSecondary;
+    @include transition();
+
+    &--active {
+      background: $primary;
+      color: $backgroundDark;
+    }
+
+    &:hover:not(&--active) {
+      color: $primary;
+    }
+  }
+}
+
+.fadeEnter {
+  clip-path: inset(0 0 100% 0);
+}
+
+.fadeEnterActive {
+  clip-path: inset(0 0 0 0);
+  @include transition(clip-path);
+}
+
+.fadeExit {
+  clip-path: inset(0 0 0 0);
+}
+
+.fadeExitActive {
+  clip-path: inset(0 0 100% 0);
+  @include transition(clip-path);
+}

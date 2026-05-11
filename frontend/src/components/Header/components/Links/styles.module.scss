@@ -1,0 +1,26 @@
+.links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 100%;
+
+  @include md {
+    gap: 1rem;
+  }
+
+  @include tb {
+    gap: 0.5rem;
+  }
+
+  span {
+    color: #fff;
+    text-align: center;
+
+    /* body_semibold_16 */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 20.8px */
+  }
+}

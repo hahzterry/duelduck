@@ -1,0 +1,124 @@
+.sideBarBlurryBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background-color: rgba($color: #000, $alpha: 0.5);
+  backdrop-filter: blur(25px);
+  z-index: 1001;
+  opacity: 0;
+  @include transition();
+
+  &--active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.containerSidebar {
+  position: fixed;
+  border-left: pxToRem(2) solid $strokeOpacity;
+  top: 0;
+  display: flex;
+  align-items: center;
+  right: pxToRem(-479);
+  height: 100vh;
+  flex-shrink: 0;
+  width: pxToRem(479);
+  background-color: $backgroundDark;
+  z-index: 1020000000000000000;
+
+  @include transition(right);
+
+  @include ph {
+    right: -120dvw;
+    width: 100dvw;
+    border: none;
+  }
+
+  &__closeSidebarButton {
+    cursor: pointer;
+    position: absolute;
+    top: pxToRem(32);
+    right: pxToRem(32);
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    color: $textSecondary;
+
+    svg {
+      width: inherit;
+      height: inherit;
+    }
+  }
+
+  &--inputCode {
+    right: pxToRem(-580);
+    width: pxToRem(480);
+    padding: 0 pxToRem(64);
+    border-left-width: pxToRem(2);
+
+    @include ph {
+      right: -120dvw;
+      width: 100dvw;
+      padding: 0 pxToRem(24);
+      border: none;
+    }
+  }
+
+  &__back {
+    display: inline-flex;
+    position: absolute;
+    left: 32px;
+    top: 32px;
+    align-items: center;
+    gap: 8px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: $textSecondary;
+    @include transition();
+
+    /* body_regular_16 */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 20.8px */
+
+    & > svg {
+      width: 24px;
+      height: 24px;
+      color: $textSecondary;
+      rotate: 180deg;
+      @include transition();
+    }
+
+    &:hover {
+      color: $primary;
+
+      & > svg {
+        color: $primary;
+      }
+    }
+  }
+
+  &--active {
+    right: 0;
+  }
+}
+
+.contentSidebar {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 64px;
+
+  @include ph {
+    padding: 0 24px;
+  }
+}

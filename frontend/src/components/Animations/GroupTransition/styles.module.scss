@@ -1,0 +1,22 @@
+.duelCardEnter {
+  opacity: 0;
+}
+
+.duelCardEnterActive {
+  opacity: 1;
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease;
+}
+
+.duelCardExit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.duelCardExitActive {
+  opacity: 0;
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease;
+}
