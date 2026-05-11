@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"net/http"
 	"strconv"
 	"time"
 
@@ -20,7 +19,6 @@ import (
 	"github.com/gagliardetto/solana-go/programs/system"
 	"github.com/gagliardetto/solana-go/programs/token"
 	"github.com/gagliardetto/solana-go/rpc"
-	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -546,39 +544,6 @@ func (s *WalletService) NewTransactionForSimulation(
 	return tx, nil
 }
 
-func (s *WalletService) GetTokenInfo(address string) (model.TokenInfo, error) {
-	if address == "" {
-		return model.TokenInfo{}, fmt.Errorf("address is required")
-	}
-
-	const TokenURL = "https://solana-gateway.moralis.io/token/mainnet/%s/metadata"
-
-	finalUrl := fmt.Sprintf(TokenURL, address)
-	req, _ := http.NewRequest("GET", finalUrl, nil)
-
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("X-API-Key", s.moralisAPIKey)
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return model.TokenInfo{}, err
-	}
-	defer func() {
-		_ = res.Body.Close()
-	}()
-
-	if res.StatusCode != http.StatusOK {
-		return model.TokenInfo{}, fmt.Errorf("cannot fetch info")
-	}
-
-	var info model.TokenInfo
-	err = json.NewDecoder(res.Body).Decode(&info)
-	if err != nil {
-		return model.TokenInfo{}, err
-	}
-
-	return info, nil
-}
-
 // EstimateTxFeeLamports estimates total fee (base + priority) for an already built transaction.
 func (s *WalletService) EstimateTxFeeLamports(
 	ctx context.Context,
@@ -616,192 +581,6 @@ func (s *WalletService) EstimateTxFeeLamports(
 	}
 
 	return baseFee + priorityFee, nil
-}
-
-// EnsureUserHasLamportsForTx makes sure the user has enough SOL
-// to stay rent-exempt and pay for the transaction fees.
-// Returns a top-up signature if SOL was sent, otherwise zeroSig
-func (s *WalletService) EnsureUserHasLamportsForTx(
-	ctx context.Context,
-	userAddress solana.PublicKey,
-	rewardTx *solana.Transaction,
-) (solana.Signature, error) {
-	var zeroSig solana.Signature
-
-	// Estimate total fee
-	feeLamports, err := s.EstimateTxFeeLamports(ctx, rewardTx)
-	if err != nil {
-		zap.L().Warn("failed to estimate tx fee, fallback used", zap.Error(err))
-		feeLamports = 50_000
-	}
-	targetFee := (feeLamports * 105) / 100
-
-	// Fetch account info to determine real data size for rent calculation
-	accInfo, err := s.SolanaRPC.GetAccountInfo(ctx, userAddress)
-	if err != nil && !errors.Is(err, rpc.ErrNotFound) {
-		return zeroSig, apperrors.Internal("failed to get user account info", err)
-	}
-
-	var space uint64
-
-	if err == nil && accInfo.Value != nil && accInfo.Value.Data != nil {
-		raw := accInfo.Value.Data.GetBinary()
-		if raw != nil {
-			space = uint64(len(raw))
-		} else {
-			// Fallback for parsed / JSON accounts
-			// If this is a token account, we know the size is 165 bytes.
-			if accInfo.Value.Owner.Equals(token.ProgramID) {
-				space = 165
-			} else {
-				// Generic conservative fallback for unknown programs.
-				space = 256
-			}
-		}
-	} else {
-		// New or plain system account without data.
-		space = 0
-	}
-	// Calculate rent-exempt minimum for the actual account size
-	rentMin, err := s.SolanaRPC.GetMinimumBalanceForRentExemption(
-		ctx,
-		space,
-		Finalized,
-	)
-	if err != nil {
-		zap.L().Error("failed to get rent-exempt minimum", zap.Error(err))
-		rentMin = 0
-	}
-
-	requiredLamports := rentMin + targetFee
-
-	bal, err := s.SolanaRPC.GetBalance(ctx, userAddress, rpc.CommitmentFinalized)
-	if err != nil && !errors.Is(err, rpc.ErrNotFound) {
-		return zeroSig, apperrors.Internal("failed to get user balance", err)
-	}
-
-	current := uint64(0)
-	if err == nil {
-		current = bal.Value
-	}
-
-	// Nothing to do if balance already sufficient
-	if current >= requiredLamports || requiredLamports == 0 {
-		return zeroSig, nil
-	}
-
-	// Calculate top-up amount
-	topUp := requiredLamports - current
-
-	// Transfer lamports from admin to the user wallet
-	inst, err := system.NewTransferInstruction(
-		topUp,
-		s.solanaAdminPrivateKey.PublicKey(),
-		userAddress,
-	).ValidateAndBuild()
-	if err != nil {
-		return zeroSig, apperrors.Internal("failed to build instruction", err)
-	}
-
-	recent, err := s.SolanaRPC.GetLatestBlockhash(ctx, Finalized)
-	if err != nil {
-		return zeroSig, apperrors.Internal("failed to get recent blockhash for topup", err)
-	}
-
-	tx, err := solana.NewTransaction(
-		[]solana.Instruction{inst},
-		recent.Value.Blockhash,
-		solana.TransactionPayer(s.solanaAdminPrivateKey.PublicKey()),
-	)
-	if err != nil {
-		return zeroSig, apperrors.Internal("failed to create topup transaction", err)
-	}
-
-	sig, err := s.sendTxWithTracker(
-		ctx,
-		tx,
-		txSignerPrivateKeyGetter(s.solanaAdminPrivateKey),
-	)
-	if err != nil {
-		return zeroSig, err
-	}
-
-	return sig, nil
-}
-
-func (s *WalletService) initializeATA(
-	ctx context.Context,
-	userID uuid.UUID,
-	userAddress solana.PublicKey,
-	payerPrivateKey solana.PrivateKey,
-	mint solana.PublicKey,
-) (string, error) {
-	initTx, err := associatedtokenaccount.NewCreateInstruction(
-		payerPrivateKey.PublicKey(),
-		userAddress,
-		mint,
-	).ValidateAndBuild()
-	if err != nil {
-		return "", apperrors.Internal("failed to build ATA init instruction", err)
-	}
-
-	instructions := []solana.Instruction{initTx}
-
-	tx, err := s.NewTransactionForSimulation(
-		instructions,
-		txSignerPrivateKeyGetter(payerPrivateKey),
-		solana.TransactionPayer(payerPrivateKey.PublicKey()))
-	if err != nil {
-		return "", err
-	}
-
-	computeUnits, err := s.GetSimulationComputeUnits(ctx, tx)
-	if err != nil {
-		if errors.Is(err, sol.ErrInsufficientFunds) {
-			return "", err
-		}
-
-		if len(instructions) > 1 {
-			computeUnits = FallBackCUTransferWithTokenAccountInit
-		} else {
-			computeUnits = FallBackCUTransferChecked
-		}
-	}
-
-	computeUnits = uint32(float64(computeUnits) * CUExtraCapacityCoefficient)
-	cuPriceInstruction, err := computebudget.NewSetComputeUnitPriceInstructionBuilder().
-		SetMicroLamports(s.PriorityTracker.GetMediumPriorityMicroLamports()).
-		ValidateAndBuild()
-	if err != nil {
-		return "", apperrors.Internal("failed to set transaction compute unit price", err)
-	}
-
-	cuLimitInstruction, err := computebudget.NewSetComputeUnitLimitInstructionBuilder().
-		SetUnits(computeUnits).
-		ValidateAndBuild()
-	if err != nil {
-		return "", apperrors.Internal("failed to set transaction compute unit limit", err)
-	}
-
-	instructions = append([]solana.Instruction{cuPriceInstruction, cuLimitInstruction}, instructions...)
-
-	tx, err = solana.NewTransaction(
-		instructions,
-		solana.Hash{},
-		solana.TransactionPayer(payerPrivateKey.PublicKey()))
-	if err != nil {
-		return "", apperrors.Internal("failed to create transaction", err)
-	}
-
-	sig, err := s.sendTxWithTracker(
-		ctx,
-		tx,
-		txSignerPrivateKeyGetter(payerPrivateKey))
-	if err != nil {
-		return "", err
-	}
-
-	return sig.String(), nil
 }
 
 func (s *WalletService) processTransactionWithAddressLookups(

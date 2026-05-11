@@ -86,7 +86,6 @@ type AppConfig struct {
 
 	SolanaURL                    string `env:"SOLANA_URL,required"`
 	SolanaWSURL                  string `env:"SOLANA_WS_URL,required"`
-	SolanaAdminPrivateKey        string `env:"SOLANA_ADMIN_PRIVATE_KEY,required"`
 	SolanaQuickNodeAPI           string `env:"SOLANA_QUICK_NODE_API"`
 	SolanaPriorityUpdateInterval string `env:"SOLANA_PRIORITY_UPDATE_INTERVAL,required"`
 	ContractAddress              string `env:"CONTRACT_ADDRESS,required"`

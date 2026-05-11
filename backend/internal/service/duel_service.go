@@ -144,7 +144,7 @@ func (s *DuelService) SignCreateCryptoDuelTransaction(
 
 	duel := model.DuelByCreateReq(req, user)
 
-	tx, _, err := s.WalletService.InitAndJoinSolanaRoom(ctx, duel, user, req.Answer, tokenInfo)
+	tx, _, err := s.WalletService.InitAndJoinSolanaRoom(ctx, duel, user, req.Answer, tokenInfo, duel.DuelPrice)
 	if err != nil {
 		return "", err
 	}
@@ -277,6 +277,22 @@ func (s *DuelService) SignJoinCryptoDuelTransaction(
 		return nil, err
 	}
 
+	var paidPrice float64
+	if duel.PriceType == model.DuelPriceTypeRange {
+		if req.PaidPrice == nil {
+			return nil, apperrors.BadRequest("paid_price is required for range type duels")
+		}
+		if duel.MinPrice != nil && *req.PaidPrice < *duel.MinPrice {
+			return nil, apperrors.BadRequest("paid_price is below min_price")
+		}
+		if duel.MaxPrice != nil && *req.PaidPrice > *duel.MaxPrice {
+			return nil, apperrors.BadRequest("paid_price exceeds max_price")
+		}
+		paidPrice = *req.PaidPrice
+	} else {
+		paidPrice = duel.DuelPrice
+	}
+
 	var tx string
 	if duel.PlayersCount == 0 {
 		tx, _, err = s.WalletService.InitAndJoinSolanaRoom(
@@ -285,6 +301,7 @@ func (s *DuelService) SignJoinCryptoDuelTransaction(
 			user,
 			req.Answer,
 			tokenInfo,
+			paidPrice,
 		)
 	} else {
 		tx, err = s.WalletService.JoinSolanaRoom(
@@ -293,6 +310,7 @@ func (s *DuelService) SignJoinCryptoDuelTransaction(
 			user,
 			req.Answer,
 			tokenInfo,
+			paidPrice,
 		)
 	}
 	if err != nil {
@@ -322,6 +340,11 @@ func (s *DuelService) JoinCryptoDuel(
 		return nil, err
 	}
 
+	tokenInfo, err := s.getDuelTokenInfoBySymbol(ctx, duel.Symbol)
+	if err != nil {
+		return nil, apperrors.Internal("failed to find solana token by symbol", err)
+	}
+
 	if duel.PriceType == model.DuelPriceTypeRange {
 		if req.JoinDuelReq.PaidPrice == nil {
 			return nil, apperrors.BadRequest("paid_price is required for range type duels")
@@ -343,6 +366,8 @@ func (s *DuelService) JoinCryptoDuel(
 				ctx,
 				req.Hash,
 				duel,
+				*req.JoinDuelReq.PaidPrice,
+				tokenInfo,
 			)
 	} else {
 		// SOL transfer has to be validated separately
@@ -353,6 +378,8 @@ func (s *DuelService) JoinCryptoDuel(
 				req.Hash,
 				user.WalletAddress,
 				duel,
+				*req.JoinDuelReq.PaidPrice,
+				tokenInfo,
 			)
 
 	}
@@ -682,7 +709,7 @@ func (s *DuelService) resolveCryptoDuel(
 				return nil, apperrors.BadRequest("recipient is not valid solana address", err)
 			}
 
-			if _, err = s.WalletService.TransferSymbol(ctx, recipientAddress, commissionAmountRaw, tokenInfo); err != nil {
+			if _, err = s.WalletService.TransferSymbol(ctx, recipientAddress, commissionAmountRaw, tokenInfo, duel.ProjectID); err != nil {
 				return nil, err
 			}
 		} else {
@@ -913,9 +940,9 @@ func (s *DuelService) cancelCryptoDuel(ctx context.Context,
 					cancelPlayers[i].Amount = duelPrice
 				}
 			}
-			txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, 0, players, tokenInfo)
+			txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, 0, players, tokenInfo, duel.ProjectID)
 		} else {
-			txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, duelPrice, players, tokenInfo)
+			txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, duelPrice, players, tokenInfo, duel.ProjectID)
 		}
 		if err != nil {
 			return nil, apperrors.ServiceUnavailable("failed to refund duel: "+duel.ID.String(), err)
@@ -1000,9 +1027,9 @@ func (s *DuelService) partialCryptoRefund(
 				players[i].Amount = duelPrice
 			}
 		}
-		txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, 0, players, tokenInfo)
+		txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, 0, players, tokenInfo, duel.ProjectID)
 	} else {
-		txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, duelPrice, players, tokenInfo)
+		txHashes, err = s.WalletService.TransferBulkSolanaChain(ctx, duelPrice, players, tokenInfo, duel.ProjectID)
 	}
 	if err != nil {
 		return nil, apperrors.ServiceUnavailable("failed to refund duel: "+duel.ID.String(), err)

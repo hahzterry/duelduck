@@ -38,7 +38,7 @@ type ICommissionDuelRepository interface {
 }
 
 type ICommissionWalletService interface {
-	TransferSymbol(ctx context.Context, recipientAddress solana.PublicKey, amount uint64, tokenInfo *model.DuelTokenInfo) (string, error)
+	TransferSymbol(ctx context.Context, recipientAddress solana.PublicKey, amount uint64, tokenInfo *model.DuelTokenInfo, projectID uuid.UUID) (string, error)
 }
 
 type CommissionService struct {
@@ -128,7 +128,7 @@ func (s *CommissionService) ClaimProjectCommission(ctx context.Context, partnerI
 			continue
 		}
 
-		txHash, err := s.WalletService.TransferSymbol(ctx, recipientAddress, netRaw, info)
+		txHash, err := s.WalletService.TransferSymbol(ctx, recipientAddress, netRaw, info, project.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -201,7 +201,7 @@ func (s *CommissionService) ClaimDDProfit(ctx context.Context) (*model.ProjectCo
 			continue
 		}
 
-		txHash, err := s.WalletService.TransferSymbol(ctx, recipientAddress, feeRaw, info)
+		txHash, err := s.WalletService.TransferSymbol(ctx, recipientAddress, feeRaw, info, uuid.Nil)
 		if err != nil {
 			return nil, err
 		}

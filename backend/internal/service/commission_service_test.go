@@ -134,8 +134,8 @@ func (m *mockCommissionDuelRepo) GetProjectDuelStats(ctx context.Context, projec
 
 type mockCommissionWalletService struct{ mock.Mock }
 
-func (m *mockCommissionWalletService) TransferSymbol(ctx context.Context, recipientAddress solana.PublicKey, amount uint64, info *model.DuelTokenInfo) (string, error) {
-	args := m.Called(ctx, recipientAddress, amount, info)
+func (m *mockCommissionWalletService) TransferSymbol(ctx context.Context, recipientAddress solana.PublicKey, amount uint64, info *model.DuelTokenInfo, projectID uuid.UUID) (string, error) {
+	args := m.Called(ctx, recipientAddress, amount, info, projectID)
 	return args.String(0), args.Error(1)
 }
 
@@ -498,7 +498,7 @@ func TestClaimProjectCommission(t *testing.T) {
 				pRepo.On("GetByPartnerID", mock.Anything, partnerID).Return(project, nil)
 				aRepo.On("GetUnclaimed", mock.Anything, projectID, mock.AnythingOfType("time.Time")).Return(accruals, nil)
 				cSvc.On("findSolanaTokenBySymbol", mock.Anything, "USDC").Return(usdcToken, nil)
-				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(req.WalletAddress), mock.AnythingOfType("uint64"), mock.Anything).Return("tx-hash-abc", nil)
+				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(req.WalletAddress), mock.AnythingOfType("uint64"), mock.Anything, mock.Anything).Return("tx-hash-abc", nil)
 				cRepo.On("Create", mock.Anything, mock.AnythingOfType("*model.ProjectCommissionClaim")).Return(nil)
 			},
 			check: func(t *testing.T, claim *model.ProjectCommissionClaim) {
@@ -538,7 +538,7 @@ func TestClaimProjectCommission(t *testing.T) {
 				pRepo.On("GetByPartnerID", mock.Anything, partnerID).Return(project, nil)
 				aRepo.On("GetUnclaimed", mock.Anything, projectID, mock.AnythingOfType("time.Time")).Return(accruals, nil)
 				cSvc.On("findSolanaTokenBySymbol", mock.Anything, "USDC").Return(usdcToken, nil)
-				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(req.WalletAddress), mock.AnythingOfType("uint64"), mock.Anything).Return("", errors.New("transfer failed"))
+				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(req.WalletAddress), mock.AnythingOfType("uint64"), mock.Anything, mock.Anything).Return("", errors.New("transfer failed"))
 			},
 			wantErr: true,
 		},
@@ -557,7 +557,7 @@ func TestClaimProjectCommission(t *testing.T) {
 				pRepo.On("GetByPartnerID", mock.Anything, partnerID).Return(project, nil)
 				aRepo.On("GetUnclaimed", mock.Anything, projectID, mock.AnythingOfType("time.Time")).Return(accruals, nil)
 				cSvc.On("findSolanaTokenBySymbol", mock.Anything, "USDC").Return(usdcToken, nil)
-				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(req.WalletAddress), mock.AnythingOfType("uint64"), mock.Anything).Return("tx-hash-abc", nil)
+				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(req.WalletAddress), mock.AnythingOfType("uint64"), mock.Anything, mock.Anything).Return("tx-hash-abc", nil)
 				cRepo.On("Create", mock.Anything, mock.AnythingOfType("*model.ProjectCommissionClaim")).Return(errors.New("db error"))
 			},
 			wantErr: true,
@@ -628,7 +628,7 @@ func TestClaimDDProfit(t *testing.T) {
 			setup: func(aRepo *mockProjectAccrualRepo, cRepo *mockProjectClaimRepo, wSvc *mockCommissionWalletService, cSvc *mockCommissionCoinService) {
 				aRepo.On("GetUnclaimedDD", mock.Anything, mock.AnythingOfType("time.Time")).Return(accruals, nil)
 				cSvc.On("findSolanaTokenBySymbol", mock.Anything, "USDC").Return(usdcToken, nil)
-				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(ddWallet), mock.AnythingOfType("uint64"), mock.Anything).Return("dd-tx-hash", nil)
+				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(ddWallet), mock.AnythingOfType("uint64"), mock.Anything, mock.Anything).Return("dd-tx-hash", nil)
 				cRepo.On("Create", mock.Anything, mock.AnythingOfType("*model.ProjectCommissionClaim")).Return(nil)
 			},
 			check: func(t *testing.T, claim *model.ProjectCommissionClaim) {
@@ -660,7 +660,7 @@ func TestClaimDDProfit(t *testing.T) {
 			setup: func(aRepo *mockProjectAccrualRepo, cRepo *mockProjectClaimRepo, wSvc *mockCommissionWalletService, cSvc *mockCommissionCoinService) {
 				aRepo.On("GetUnclaimedDD", mock.Anything, mock.AnythingOfType("time.Time")).Return(accruals, nil)
 				cSvc.On("findSolanaTokenBySymbol", mock.Anything, "USDC").Return(usdcToken, nil)
-				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(ddWallet), mock.AnythingOfType("uint64"), mock.Anything).Return("", errors.New("transfer error"))
+				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(ddWallet), mock.AnythingOfType("uint64"), mock.Anything, mock.Anything).Return("", errors.New("transfer error"))
 			},
 			wantErr: true,
 		},
@@ -669,7 +669,7 @@ func TestClaimDDProfit(t *testing.T) {
 			setup: func(aRepo *mockProjectAccrualRepo, cRepo *mockProjectClaimRepo, wSvc *mockCommissionWalletService, cSvc *mockCommissionCoinService) {
 				aRepo.On("GetUnclaimedDD", mock.Anything, mock.AnythingOfType("time.Time")).Return(accruals, nil)
 				cSvc.On("findSolanaTokenBySymbol", mock.Anything, "USDC").Return(usdcToken, nil)
-				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(ddWallet), mock.AnythingOfType("uint64"), mock.Anything).Return("dd-tx-hash", nil)
+				wSvc.On("TransferSymbol", mock.Anything, solana.MustPublicKeyFromBase58(ddWallet), mock.AnythingOfType("uint64"), mock.Anything, mock.Anything).Return("dd-tx-hash", nil)
 				cRepo.On("Create", mock.Anything, mock.AnythingOfType("*model.ProjectCommissionClaim")).Return(errors.New("db error"))
 			},
 			wantErr: true,

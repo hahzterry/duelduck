@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"strings"
-	"time"
 
 	"dd-prediction-api/config"
 	"dd-prediction-api/internal/client/jupiter"
@@ -24,14 +23,14 @@ import (
 )
 
 type IWalletService interface {
-	InitAndJoinSolanaRoom(ctx context.Context, duel *model.Duel, user *model.User, answer uint8, tokenInfo *model.DuelTokenInfo) (string, string, error)
-	JoinSolanaRoom(ctx context.Context, duel *model.Duel, user *model.User, answer uint8, tokenInfo *model.DuelTokenInfo) (string, error)
+	InitAndJoinSolanaRoom(ctx context.Context, duel *model.Duel, user *model.User, answer uint8, tokenInfo *model.DuelTokenInfo, paidPrice float64) (string, string, error)
+	JoinSolanaRoom(ctx context.Context, duel *model.Duel, user *model.User, answer uint8, tokenInfo *model.DuelTokenInfo, paidPrice float64) (string, error)
 	RewardDuelWinners(ctx context.Context, winAmount uint64, winners []model.CryptoDuelPlayer, tokenInfo *model.DuelTokenInfo, projectID uuid.UUID) ([]string, error)
 	RewardDuelOwnerWithCommission(ctx context.Context, publicAddress string, commissionReward uint64, tokenInfo *model.DuelTokenInfo) (string, error)
 	SendProjectCommission(ctx context.Context, partnerWalletAddress string, amount uint64, tokenInfo *model.DuelTokenInfo) (string, error)
-	TransferSymbol(ctx context.Context, recipientAddress solana.PublicKey, amount uint64, tokenInfo *model.DuelTokenInfo) (string, error)
-	SendTransaction(ctx context.Context, instructions []solana.Instruction) (string, error)
-	TransferBulkSolanaChain(ctx context.Context, amount uint64, players []model.CryptoDuelPlayer, tokenInfo *model.DuelTokenInfo) ([]string, error)
+	TransferSymbol(ctx context.Context, recipientAddress solana.PublicKey, amount uint64, tokenInfo *model.DuelTokenInfo, projectID uuid.UUID) (string, error)
+	SendTransaction(ctx context.Context, instructions []solana.Instruction, adminKey solana.PrivateKey) (string, error)
+	TransferBulkSolanaChain(ctx context.Context, amount uint64, players []model.CryptoDuelPlayer, tokenInfo *model.DuelTokenInfo, projectID uuid.UUID) ([]string, error)
 	WithdrawSolanaRoom(ctx context.Context, duel *model.Duel, tokenInfo *model.DuelTokenInfo) (string, error)
 	CloseSolanaSPLTokensRoom(ctx context.Context, duel *model.Duel, tokenInfo *model.DuelTokenInfo) (string, error)
 	CloseSolanaRoom(ctx context.Context, duel *model.Duel) (string, error)
@@ -69,12 +68,7 @@ type WalletService struct {
 	HTTPClient            *resty.Client
 	TransactionManager    *repo.TransactionManager
 	WalletAuthorityClient *walletauthority.Client
-
-	solanaAdminPrivateKey solana.PrivateKey
 	contractAddress       string
-	moralisAPIKey         string
-	newContractStartDate  time.Time
-	newPdaInitBytesDate   time.Time
 }
 
 func NewWalletService(
@@ -92,11 +86,6 @@ func NewWalletService(
 	walletAuthority *walletauthority.Client,
 ) (*WalletService, error) {
 
-	solanaAdminPrivateKey, err := solana.PrivateKeyFromBase58(c.App.SolanaAdminPrivateKey)
-	if err != nil {
-		return nil, apperrors.Internal("failed to get solana contract admin private key")
-	}
-
 	sigTracker.Start()
 
 	w := &WalletService{
@@ -106,17 +95,13 @@ func NewWalletService(
 		UserRepository:        userRepository,
 		TxRepository:          txRepository,
 		privateKeyRepository:  privateKeyRepository,
-		solanaAdminPrivateKey: solanaAdminPrivateKey,
 		SolanaRPC:             solanaRPC,
 		HTTPClient:            resty.New(),
 		Jupiter:               jupiter,
 		Solscan:               solscan,
 		contractAddress:       c.App.ContractAddress,
-		moralisAPIKey:         c.Client.MoralisAPIKey,
 		TransactionManager:    transactionManager,
 		WalletAuthorityClient: walletAuthority,
-		newContractStartDate:  time.Date(2026, 3, 6, 21, 55, 0, 0, time.UTC),
-		newPdaInitBytesDate:   time.Date(2026, 3, 14, 17, 0, 0, 0, time.UTC),
 	}
 
 	return w, nil
@@ -136,15 +121,6 @@ func (w *WalletService) SendTxWithTracker(
 	privateKeyGetter func(key solana.PublicKey) *solana.PrivateKey,
 ) (solana.Signature, error) {
 	return w.sendTxWithTracker(ctx, tx, privateKeyGetter)
-}
-
-func (w *WalletService) InitializeATA(
-	ctx context.Context,
-	userID uuid.UUID,
-	userAddress solana.PublicKey,
-	mint solana.PublicKey,
-) (string, error) {
-	return w.initializeATA(ctx, userID, userAddress, w.solanaAdminPrivateKey, mint)
 }
 
 func (w *WalletService) GetAccountInfo(ctx context.Context, userTokenAccount solana.PublicKey) (out *rpc.GetAccountInfoResult, err error) {

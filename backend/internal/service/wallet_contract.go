@@ -36,9 +36,15 @@ func (s *WalletService) InitAndJoinSolanaRoom(
 	user *model.User,
 	answer uint8,
 	tokenInfo *model.DuelTokenInfo,
+	paidPrice float64,
 ) (string, string, error) {
+	adminKey, err := s.getProjectAdminKey(ctx, duel.ProjectID)
+	if err != nil {
+		return "", "", err
+	}
+
 	var (
-		duelPrice = uint64(duel.DuelPrice * tokenInfo.CryptoDuelPriceMultiplier())
+		duelPrice = uint64(paidPrice * tokenInfo.CryptoDuelPriceMultiplier())
 
 		initEndpoint string
 		initReqBody  = map[string]interface{}{
@@ -54,11 +60,7 @@ func (s *WalletService) InitAndJoinSolanaRoom(
 	if duel.Symbol == model.SOLSymbol {
 		initEndpoint = "init-sol"
 	} else {
-		if duel.CreatedAt.After(s.newContractStartDate) {
-			initEndpoint = "init-new"
-		} else {
-			initEndpoint = "init"
-		}
+		initEndpoint = "init-new"
 
 		initReqBody["token_mint"] = tokenInfo.Mint
 	}
@@ -109,21 +111,17 @@ func (s *WalletService) InitAndJoinSolanaRoom(
 			"answer":       answer,
 			"pda_nr":       duel.RoomNumber,
 			"user_address": userPublicKey,
+			"bet_amount":   duelPrice,
 		}
 	)
 
 	if tokenInfo.Symbol == model.SOLSymbol {
 		joinEndpoint = "join-sol"
 	} else {
-		if duel.CreatedAt.After(s.newContractStartDate) {
-			joinEndpoint = "join-new"
+		joinEndpoint = "join-new"
 
-			joinReqBody["token_program"] = tokenInfo.ProgramID
-			joinReqBody["token_mint"] = tokenInfo.Mint
-		} else {
-			joinEndpoint = "join"
-		}
-
+		joinReqBody["token_program"] = tokenInfo.ProgramID
+		joinReqBody["token_mint"] = tokenInfo.Mint
 		joinReqBody["from_token_account"] = userTokenAccount
 		joinReqBody["to_token_account"] = roomTokenPDA
 	}
@@ -152,8 +150,8 @@ func (s *WalletService) InitAndJoinSolanaRoom(
 	}
 
 	_, err = tx.PartialSign(func(key solana.PublicKey) *solana.PrivateKey {
-		if key.Equals(s.solanaAdminPrivateKey.PublicKey()) {
-			return &s.solanaAdminPrivateKey
+		if key.Equals(adminKey.PublicKey()) {
+			return &adminKey
 		}
 		return nil
 	})
@@ -177,9 +175,15 @@ func (s *WalletService) JoinSolanaRoom(
 	user *model.User,
 	answer uint8,
 	tokenInfo *model.DuelTokenInfo,
+	paidPrice float64,
 ) (string, error) {
+	adminKey, err := s.getProjectAdminKey(ctx, duel.ProjectID)
+	if err != nil {
+		return "", err
+	}
+
 	var (
-		duelPrice = duel.DuelPrice * tokenInfo.CryptoDuelPriceMultiplier()
+		duelPrice = paidPrice * tokenInfo.CryptoDuelPriceMultiplier()
 	)
 
 	pdaInfo, err := s.WalletAuthorityClient.GetPdaInfo(map[string]any{"pda_nr": duel.RoomNumber})
@@ -188,10 +192,10 @@ func (s *WalletService) JoinSolanaRoom(
 	}
 
 	var pdaInitBytes uint64
-	if duel.CreatedAt.After(s.newPdaInitBytesDate) && duel.Symbol != model.SOLSymbol {
-		pdaInitBytes = model.NewPdaInitBytes
+	if duel.Symbol != model.SOLSymbol {
+		pdaInitBytes = model.SPLPdaInitBytes
 	} else {
-		pdaInitBytes = model.OldPdaInitBytes
+		pdaInitBytes = model.SOLPdaInitBytes
 	}
 
 	multiplier := ((pdaInfo.BytesSize - pdaInitBytes) / model.PdaMultiplierStepBytes) + 1
@@ -201,7 +205,7 @@ func (s *WalletService) JoinSolanaRoom(
 		requiredMultiplier = (duel.PlayersCount-1)/10 + 1
 	}
 	if multiplier >= requiredMultiplier {
-		return s.joinSolanaRoomWithExternalWallet(ctx, duel, user, answer, tokenInfo, multiplier)
+		return s.joinSolanaRoomWithExternalWallet(ctx, duel, user, answer, tokenInfo, multiplier, paidPrice, adminKey)
 	}
 
 	// extend room size
@@ -250,22 +254,18 @@ func (s *WalletService) JoinSolanaRoom(
 			"answer":       answer,
 			"pda_nr":       duel.RoomNumber,
 			"user_address": userPublicKey,
+			"bet_amount":   uint64(duelPrice),
 		}
 	)
 
 	if tokenInfo.Symbol == model.SOLSymbol {
 		joinEndpoint = "join-sol"
 	} else {
-		if duel.CreatedAt.After(s.newContractStartDate) {
-			reallocateEndpoint = "memory-new"
-			joinEndpoint = "join-new"
+		reallocateEndpoint = "memory-new"
+		joinEndpoint = "join-new"
 
-			joinReqBody["token_program"] = tokenInfo.ProgramID
-			joinReqBody["token_mint"] = tokenInfo.Mint
-		} else {
-			joinEndpoint = "join"
-		}
-
+		joinReqBody["token_program"] = tokenInfo.ProgramID
+		joinReqBody["token_mint"] = tokenInfo.Mint
 		joinReqBody["from_token_account"] = userTokenAccount
 		joinReqBody["to_token_account"] = duel.RoomTokenPDA
 	}
@@ -299,8 +299,8 @@ func (s *WalletService) JoinSolanaRoom(
 	}
 
 	_, err = tx.PartialSign(func(key solana.PublicKey) *solana.PrivateKey {
-		if key.Equals(s.solanaAdminPrivateKey.PublicKey()) {
-			return &s.solanaAdminPrivateKey
+		if key.Equals(adminKey.PublicKey()) {
+			return &adminKey
 		}
 		return nil
 	})
@@ -325,8 +325,10 @@ func (s *WalletService) joinSolanaRoomWithExternalWallet(
 	answer uint8,
 	tokenInfo *model.DuelTokenInfo,
 	multiplier uint64,
+	paidPrice float64,
+	adminKey solana.PrivateKey,
 ) (string, error) {
-	duelPrice := duel.DuelPrice * tokenInfo.CryptoDuelPriceMultiplier()
+	duelPrice := paidPrice * tokenInfo.CryptoDuelPriceMultiplier()
 
 	userPublicKey, err := solana.PublicKeyFromBase58(user.WalletAddress)
 	if err != nil {
@@ -369,21 +371,17 @@ func (s *WalletService) joinSolanaRoomWithExternalWallet(
 			"answer":       answer,
 			"pda_nr":       duel.RoomNumber,
 			"user_address": userPublicKey,
+			"bet_amount":   uint64(duelPrice),
 		}
 	)
 
 	if tokenInfo.Symbol == model.SOLSymbol {
 		joinEndpoint = "join-sol"
 	} else {
-		if duel.CreatedAt.After(s.newContractStartDate) {
-			joinEndpoint = "join-new"
+		joinEndpoint = "join-new"
 
-			joinReqBody["token_program"] = tokenInfo.ProgramID
-			joinReqBody["token_mint"] = tokenInfo.Mint
-		} else {
-			joinEndpoint = "join"
-		}
-
+		joinReqBody["token_program"] = tokenInfo.ProgramID
+		joinReqBody["token_mint"] = tokenInfo.Mint
 		joinReqBody["from_token_account"] = userTokenAccount
 		joinReqBody["to_token_account"] = duel.RoomTokenPDA
 	}
@@ -412,8 +410,8 @@ func (s *WalletService) joinSolanaRoomWithExternalWallet(
 	}
 
 	_, err = tx.PartialSign(func(key solana.PublicKey) *solana.PrivateKey {
-		if key.Equals(s.solanaAdminPrivateKey.PublicKey()) {
-			return &s.solanaAdminPrivateKey
+		if key.Equals(adminKey.PublicKey()) {
+			return &adminKey
 		}
 		return nil
 	})
@@ -660,22 +658,28 @@ func (s *WalletService) TransferSymbol(
 	recipientAddress solana.PublicKey,
 	amount uint64,
 	tokenInfo *model.DuelTokenInfo,
+	projectID uuid.UUID,
 ) (string, error) {
 	if amount == 0 {
 		return "", nil
 	}
 
+	adminKey, err := s.getProjectAdminKey(ctx, projectID)
+	if err != nil {
+		return "", err
+	}
+
 	if tokenInfo.Symbol == model.SOLSymbol {
 		transferInstruction, err := system.NewTransferInstruction(
 			amount,
-			s.solanaAdminPrivateKey.PublicKey(),
+			adminKey.PublicKey(),
 			recipientAddress,
 		).ValidateAndBuild()
 		if err != nil {
 			return "", apperrors.Internal("failed to build transfer transaction", err)
 		}
 
-		txHash, err := s.SendTransaction(ctx, []solana.Instruction{transferInstruction})
+		txHash, err := s.SendTransaction(ctx, []solana.Instruction{transferInstruction}, adminKey)
 		if err != nil {
 			return "", err
 		}
@@ -683,7 +687,7 @@ func (s *WalletService) TransferSymbol(
 		return txHash, nil
 	}
 
-	adminTokenAccount, err := s.findATA(s.solanaAdminPrivateKey.PublicKey(), tokenInfo.Mint, tokenInfo.ProgramID)
+	adminTokenAccount, err := s.findATA(adminKey.PublicKey(), tokenInfo.Mint, tokenInfo.ProgramID)
 	if err != nil || adminTokenAccount == ZeroValuePublicKey {
 		return "", apperrors.Internal("failed to find associated token account for user rewarding", err)
 	}
@@ -706,7 +710,7 @@ func (s *WalletService) TransferSymbol(
 	inst := make([]solana.Instruction, 0, 2)
 	if info == nil || info.Value == nil || info.Value.Owner == ZeroValuePublicKey {
 		initTokenAccountInstruction, err := associatedtokenaccount.NewCreateInstruction(
-			s.solanaAdminPrivateKey.PublicKey(),
+			adminKey.PublicKey(),
 			recipientAddress,
 			mint).ValidateAndBuild()
 		if err != nil {
@@ -720,15 +724,15 @@ func (s *WalletService) TransferSymbol(
 		amount,
 		adminTokenAccount,
 		duelOwnerATA,
-		s.solanaAdminPrivateKey.PublicKey(),
-		[]solana.PublicKey{s.solanaAdminPrivateKey.PublicKey()}).ValidateAndBuild()
+		adminKey.PublicKey(),
+		[]solana.PublicKey{adminKey.PublicKey()}).ValidateAndBuild()
 	if err != nil {
 		return "", apperrors.Internal("failed to build transfer transaction", err)
 	}
 
 	inst = append(inst, transferInstruction)
 
-	txHash, err := s.SendTransaction(ctx, inst)
+	txHash, err := s.SendTransaction(ctx, inst, adminKey)
 	if err != nil {
 		return "", err
 	}
@@ -739,11 +743,12 @@ func (s *WalletService) TransferSymbol(
 func (s *WalletService) SendTransaction(
 	ctx context.Context,
 	instructions []solana.Instruction,
+	adminKey solana.PrivateKey,
 ) (string, error) {
 	tx, err := s.NewTransactionForSimulation(
 		instructions,
-		txSignerPrivateKeyGetter(s.solanaAdminPrivateKey),
-		solana.TransactionPayer(s.solanaAdminPrivateKey.PublicKey()))
+		txSignerPrivateKeyGetter(adminKey),
+		solana.TransactionPayer(adminKey.PublicKey()))
 	if err != nil {
 		return "", err
 	}
@@ -776,7 +781,7 @@ func (s *WalletService) SendTransaction(
 	tx, err = solana.NewTransaction(
 		instructions,
 		solana.Hash{},
-		solana.TransactionPayer(s.solanaAdminPrivateKey.PublicKey()))
+		solana.TransactionPayer(adminKey.PublicKey()))
 	if err != nil {
 		return "", apperrors.Internal("failed to create transaction", err)
 	}
@@ -784,7 +789,7 @@ func (s *WalletService) SendTransaction(
 	txHash, err := s.sendTransaction(
 		ctx,
 		tx,
-		txSignerPrivateKeyGetter(s.solanaAdminPrivateKey))
+		txSignerPrivateKeyGetter(adminKey))
 	if err != nil {
 		return "", err
 	}
@@ -797,21 +802,26 @@ func (s *WalletService) TransferBulkSolanaChain(
 	amount uint64,
 	players []model.CryptoDuelPlayer,
 	tokenInfo *model.DuelTokenInfo,
+	projectID uuid.UUID,
 ) ([]string, error) {
+	adminKey, err := s.getProjectAdminKey(ctx, projectID)
+	if err != nil {
+		return nil, err
+	}
 
 	if tokenInfo.Symbol != model.SOLSymbol {
-		adminTokenAccount, err := s.findATA(s.solanaAdminPrivateKey.PublicKey(), tokenInfo.Mint, tokenInfo.ProgramID)
+		adminTokenAccount, err := s.findATA(adminKey.PublicKey(), tokenInfo.Mint, tokenInfo.ProgramID)
 		if err != nil || adminTokenAccount == ZeroValuePublicKey {
 			return nil, apperrors.Internal("failed to find associated token account for user rewarding", err)
 		}
 	}
-	allTransferInstructions, err := s.getTransferInstruction(s.solanaAdminPrivateKey, amount, players, tokenInfo)
+	allTransferInstructions, err := s.getTransferInstruction(adminKey, amount, players, tokenInfo)
 	if err != nil {
 		return nil, err
 	}
 
 	batches := separateInstructions(allTransferInstructions)
-	return s.sendBatchTransferTransactions(ctx, batches, s.solanaAdminPrivateKey)
+	return s.sendBatchTransferTransactions(ctx, batches, adminKey)
 }
 
 func (s *WalletService) getTransferInstruction(
@@ -924,14 +934,9 @@ func (s *WalletService) WithdrawSolanaRoom(
 		"token_mint": tokenInfo.Mint,
 	}
 
-	endpoint := "withdraw"
-	if duel.CreatedAt.After(s.newContractStartDate) {
-		endpoint = "withdraw-new"
-	}
-
 	signature, err := s.WalletAuthorityClient.GetSignatureFromContract(
 		reqBody,
-		endpoint,
+		"withdraw-new",
 	)
 	if err != nil {
 		return "", err
@@ -946,7 +951,12 @@ func (s *WalletService) CloseSolanaSPLTokensRoom(
 	duel *model.Duel,
 	tokenInfo *model.DuelTokenInfo,
 ) (string, error) {
-	adminTokenAccount, err := s.findATA(s.solanaAdminPrivateKey.PublicKey(), tokenInfo.Mint, tokenInfo.ProgramID)
+	adminKey, err := s.getProjectAdminKey(ctx, duel.ProjectID)
+	if err != nil {
+		return "", err
+	}
+
+	adminTokenAccount, err := s.findATA(adminKey.PublicKey(), tokenInfo.Mint, tokenInfo.ProgramID)
 	if err != nil || adminTokenAccount == ZeroValuePublicKey {
 		return "", apperrors.Internal("failed to find associated token account for user rewarding", err)
 	}
@@ -956,14 +966,9 @@ func (s *WalletService) CloseSolanaSPLTokensRoom(
 		"token_mint": tokenInfo.Mint,
 	}
 
-	endpoint := "close-room"
-	if duel.CreatedAt.After(s.newContractStartDate) {
-		endpoint = "close-room-new"
-	}
-
 	signature, err := s.WalletAuthorityClient.GetSignatureFromContract(
 		reqBody,
-		endpoint,
+		"close-room-new",
 	)
 	if err != nil {
 		return "", err
@@ -1485,6 +1490,8 @@ func (s *WalletService) validateJoinCryptoDuelSCTransaction(
 	ctx context.Context,
 	txHash string,
 	duel *model.Duel,
+	paidPrice float64,
+	tokenInfo *model.DuelTokenInfo,
 ) (string, error) {
 
 	sig, err := solana.SignatureFromBase58(txHash)
@@ -1516,6 +1523,9 @@ func (s *WalletService) validateJoinCryptoDuelSCTransaction(
 	if !strings.Contains(logs, fmt.Sprintf("Current executing program address: %s", s.contractAddress)) {
 		return "", apperrors.BadRequest("invalid program address")
 	}
+	if !strings.Contains(logs, fmt.Sprintf("Bet: %d", int64(paidPrice*tokenInfo.CryptoDuelPriceMultiplier()))) {
+		return "", apperrors.BadRequest("invalid bet")
+	}
 
 	roomNumberStr, found := parseTxLogs(model.JoinedSPLRoomRegex, logs)
 	if !found {
@@ -1545,6 +1555,8 @@ func (s *WalletService) validateJoinCryptoDuelSOLTransaction(
 	txHash string,
 	sender string,
 	duel *model.Duel,
+	paidPrice float64,
+	tokenInfo *model.DuelTokenInfo,
 ) (string, error) {
 	sig, err := solana.SignatureFromBase58(txHash)
 	if err != nil {
@@ -1582,6 +1594,9 @@ func (s *WalletService) validateJoinCryptoDuelSOLTransaction(
 	}
 	if !strings.Contains(logs, fmt.Sprintf("Current executing program address: %s", s.contractAddress)) {
 		return "", apperrors.BadRequest("invalid program address")
+	}
+	if !strings.Contains(logs, fmt.Sprintf("Bet: %d", int64(paidPrice*tokenInfo.CryptoDuelPriceMultiplier()))) {
+		return "", apperrors.BadRequest("invalid bet")
 	}
 
 	senderAddress, err := solana.PublicKeyFromBase58(sender)

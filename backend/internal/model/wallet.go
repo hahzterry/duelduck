@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	NewPdaInitBytes        = 818
-	OldPdaInitBytes        = 814
+	SOLPdaInitBytes        = 818
+	SPLPdaInitBytes        = 814
 	PdaMultiplierStepBytes = 330
 )
 
