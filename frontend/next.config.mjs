@@ -62,7 +62,6 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   skipProxyUrlNormalize: true,
   output: 'standalone',
-  distDir: './dist',
   sassOptions: {
     additionalData: `
     @use 'sass:math';
